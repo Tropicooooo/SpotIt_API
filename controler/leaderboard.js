@@ -11,7 +11,7 @@ export const getLeaderboard = async (req, res) => {
       res.sendStatus(404); // Problème non trouvé
     }
   } catch (err) {
-    console.error("Erreur lors de la récupération du problème :", err);
+    console.error("Erreur lors de la récupération du leaderboard :", err);
     res.sendStatus(500); // Erreur serveur
   }
 };
