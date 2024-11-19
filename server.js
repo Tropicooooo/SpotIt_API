@@ -9,5 +9,5 @@ app.use(express.json({ limit: '10mb' }));
 app.use(Router);
 
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`SpotIt listening at http://localhost:${port}`);
 });
