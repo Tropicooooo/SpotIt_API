@@ -1,4 +1,4 @@
-export const getUser = async (SQLClient, { id }) => {
-    const { rows } = await SQLClient.query('SELECT * FROM "user" WHERE id = $1', [id]);
+export const getUser = async (SQLClient, { email }) => {
+    const { rows } = await SQLClient.query('SELECT * FROM "user" WHERE email = $1', [email]);
     return rows[0];
 };

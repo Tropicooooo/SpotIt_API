@@ -21,15 +21,15 @@ export const addProblem = async (req, res) => {
   try {
     console.log("Données reçues :", req.body); // Debug
 
-    const { description, latitude, longitude, picture } = req.body;
+    const { description, latitude, longitude, picture, problemTypeLabel } = req.body;
 
-    if (!description || !latitude || !longitude) {
-      console.error("Champs manquants :", { description, latitude, longitude });
+    if (!description || !latitude || !longitude || !problemTypeLabel) {
+      console.error("Champs manquants :", { description, latitude, longitude, problemTypeLabel });
       return res.status(400).json({ error: "Champs obligatoires manquants" });
     }
 
     // Ajouter le problème dans la base de données
-    await problemModel.addProblem(pool, { description, latitude, longitude, picture });
+    await problemModel.addProblem(pool, { description, latitude, longitude, picture, problemTypeLabel });
 
     res.sendStatus(201); // Problème créé avec succès
   } catch (err) {
@@ -40,7 +40,7 @@ export const addProblem = async (req, res) => {
 
 // Récupérer les problèmes dans une région donnée
 export const getProblemsInRegion = async (req, res) => {
-  const { latMin, latMax, lngMin, lngMax, type, status, importanceMin, importanceMax } = req.query;
+  const { latMin, latMax, lngMin, lngMax, type, status, emergencyDegreeMin, emergencyDegreeMax } = req.query;
 
   // Vérification des paramètres obligatoires
   if (!latMin || !latMax || !lngMin || !lngMax) {
@@ -66,10 +66,9 @@ export const getProblemsInRegion = async (req, res) => {
       lngMax: lngMaxNum,
       type: type || null, // Passer null si aucun type n'est fourni
       status: status || null, // Passer null si aucun statut n'est fourni
-      importanceMin: importanceMin || null, // Passer null si aucune importance minimale n'est fournie
-      importanceMax: importanceMax || null // Passer null si aucune importance maximale n'est four
+      emergencyDegreeMin: emergencyDegreeMin || null, // Passer null si aucune importance minimale n'est fournie
+      emergencyDegreeMax: emergencyDegreeMax || null // Passer null si aucune importance maximale n'est fournie
     });
-
 
     res.json(problems); // Envoi des problèmes récupérés
   } catch (error) {
