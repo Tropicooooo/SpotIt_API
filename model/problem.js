@@ -28,7 +28,6 @@ export const getProblemsInRegion = async (SQLClient, { latMin, latMax, lngMin, l
 
   if (status) {
     const statusArray = status.split(','); // Split the status string into an array
-    console.log(statusArray);
     query += ` AND Problem.Status IN (${statusArray.map((_, i) => `$${values.length + i + 1}`).join(",")})`;
     values.push(...statusArray);
   }
