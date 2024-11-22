@@ -27,15 +27,17 @@ export const getProblemsInRegion = async (SQLClient, { latMin, latMax, lngMin, l
   const values = [latMin, latMax, lngMin, lngMax];
 
   if (status) {
-    const statusArray = status.split(','); // Split the status string into an array
+    const statusArray = status.split(','); //
     query += ` AND Problem.Status IN (${statusArray.map((_, i) => `$${values.length + i + 1}`).join(",")})`;
     values.push(...statusArray);
   }
 
   if (type) {
-    query += ` AND ProblemType.Label = $${values.length + 1}`;
-    values.push(type);
-  }
+    const typeArray = type.split(',').map(t => t.trim());
+    query += ` AND ProblemType.Label IN (${typeArray.map((_, i) => `$${values.length + i + 1}`).join(",")})`;
+    values.push(...typeArray);
+}
+
 
   if (emergencyDegreeMin && emergencyDegreeMax) {
     query += ` AND ProblemType.EmergencyDegree BETWEEN $${values.length + 1} AND $${values.length + 2}`;
