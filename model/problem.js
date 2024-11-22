@@ -16,7 +16,6 @@ export const addProblem = async (SQLClient, { description, latitude, longitude, 
 
 
 export const getProblemsInRegion = async (SQLClient, { latMin, latMax, lngMin, lngMax, type, status, emergencyDegreeMin, emergencyDegreeMax }) => {
-  // Construire la base de la requête avec une jointure vers ProblemType
   let query = `
     SELECT Problem.*, ProblemType.Label AS problemTypeLabel, ProblemType.EmergencyDegree AS emergencyDegree
     FROM Problem
@@ -27,26 +26,23 @@ export const getProblemsInRegion = async (SQLClient, { latMin, latMax, lngMin, l
 
   const values = [latMin, latMax, lngMin, lngMax];
 
-  // Ajouter une clause pour le statut si un statut est fourni
   if (status) {
-    query += ` AND Status = $${values.length + 1}`;
-    values.push(status);
+    const statusArray = status.split(','); // Split the status string into an array
+    console.log(statusArray);
+    query += ` AND Problem.Status IN (${statusArray.map((_, i) => `$${values.length + i + 1}`).join(",")})`;
+    values.push(...statusArray);
   }
 
-  // Ajouter une clause pour le type si un type est fourni
   if (type) {
     query += ` AND ProblemType.Label = $${values.length + 1}`;
     values.push(type);
   }
 
-  // Ajouter une clause pour l'emergencyDegree si des valeurs minimales et maximales sont fournies
   if (emergencyDegreeMin && emergencyDegreeMax) {
     query += ` AND ProblemType.EmergencyDegree BETWEEN $${values.length + 1} AND $${values.length + 2}`;
-    values.push(emergencyDegreeMin);
-    values.push(emergencyDegreeMax);
+    values.push(emergencyDegreeMin, emergencyDegreeMax);
   }
 
-  // Exécuter la requête et récupérer les résultats
   const { rows } = await SQLClient.query(query, values);
   return rows;
 };
