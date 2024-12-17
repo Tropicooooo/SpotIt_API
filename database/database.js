@@ -1,17 +1,36 @@
-import "dotenv/config";
-import pg from "pg";
-
+import 'dotenv/config';
+import pg from 'pg';
 
 const pgPool = new pg.Pool({
-    user: process.env.DB_USER,           // Vérifie que ces valeurs existent
-    host: process.env.DB_HOST,           // Le nom d'hôte est 'postgres' (nom du service dans Compose)
-    database: process.env.DB_NAME,       // Nom de la base de données
-    password: process.env.DB_PASSWORD,   // Mot de passe
-    port: 5432
-  });
-  
+    host: process.env.POSTGRES_HOST,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB
+});
 
+/* ----- Deuxième partie ----- */
 export const pool = {
+    connect: async () => {
+        try {
+            const client = await pgPool.connect();
+            return {
+                query : async (query, params) => {
+                    try {
+                        return await client.query(query, params);
+                    } catch (e) {
+                        console.error(e);
+                        throw e;
+                    }
+                },
+                release : () => {
+                    return client.release();
+                }
+            };
+        } catch (e){
+            console.error(e);
+            throw e;
+        }
+    },
     query: async (query, params) => {
         try {
             return await pgPool.query(query, params);
@@ -25,6 +44,8 @@ export const pool = {
     }
 };
 
-process.on("exit", () => {
-    pgPool.end().then(() => console.log("pool closed"));
+/* ----- Troisième partie ----- */
+// Si nous fermons notre processus, nous fermerons automatiquement toutes les connexions ouvertes à la base de données
+process.on('exit', () => {
+    pgPool.end().then(() => console.log('pool closed'));
 });
