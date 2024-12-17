@@ -72,11 +72,11 @@ VALUES
 
 INSERT INTO "voucher" (label, description, points_number, picture) 
 VALUES
-    ('lepetitgourmet', 'Le Petit Gourmet - Restaurant de la ville de Namur', 300, '/uploads/vouchers/grogu.jpg'),
-    ('cinemastar', 'Cinema Star - Cinema de la ville de Liège', 250, '/uploads/vouchers/grogu.jpg'),
-    ('parcdesplaisirs', 'Parc des Plaisirs - Parc de la ville de Mons', 800, '/uploads/vouchers/grogu.jpg'),
-    ('chezjuliette', 'Chez Juliette - Restaurant de la ville de Tournai', 400, '/uploads/vouchers/grogu.jpg'),
-    ('cinemalumina', 'Cinema Lumina - Cinema de la ville de Bruxelles', 150, '/uploads/vouchers/grogu.jpg');
+    ('lepetitgourmet', 'Le Petit Gourmet est un restaurant de la ville de Namur', 500, '/uploads/vouchers/grogu.jpg'),
+    ('cinemastar', 'Cinema Star est un cinema de la ville de Liège', 250, '/uploads/vouchers/grogu.jpg'),
+    ('parcdesplaisirs', 'Parc des Plaisirs est un parc de la ville de Mons', 800, '/uploads/vouchers/grogu.jpg'),
+    ('chezjuliette', 'Chez Juliette est un restaurant de la ville de Tournai', 500, '/uploads/vouchers/grogu.jpg'),
+    ('cinemalumina', 'Cinema Lumina est un cinema de la ville de Bruxelles', 250, '/uploads/vouchers/grogu.jpg');
 
 INSERT INTO "user_voucher" (code, claim_date, expiration_date, user_email, voucher_label) 
 VALUES

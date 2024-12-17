@@ -1,29 +1,29 @@
-export const getVouchers = async (SQLClient, { page = 1, limit = 10 }) => {  //OK
+export const getVouchers = async (SQLClient, { page = 1, limit = 10 }) => {
     const offset = (page - 1) * limit; 
     const {rows} = await SQLClient.query('SELECT label AS "label", description AS "description", points_number AS "pointsNumber", picture AS "picture" FROM "voucher" LIMIT $1 OFFSET $2', [limit, offset]);    
     return rows;
 };
 
-export const getVoucher = async (SQLClient, {label}) => {  //OK   
+export const getVoucher = async (SQLClient, {label}) => { 
     const {rows} = await SQLClient.query('SELECT label AS "label", description AS "description", points_number AS "pointsNumber", picture AS "picture" FROM "voucher" WHERE label = $1', [label]);
     return rows[0];
 };
 
-export const getTotalVouchers = async (SQLClient) => {  //OK
+export const getTotalVouchers = async (SQLClient) => {
     const result = await SQLClient.query('SELECT COUNT(*) AS total FROM "voucher"');
     const total = result.rows[0].total;
     return total;
 };
 
-export const deleteVoucher = async (SQLClient, {label}) => {  //OK  
+export const deleteVoucher = async (SQLClient, {label}) => { 
     return await SQLClient.query('DELETE FROM "voucher" WHERE label = $1', [label]);
 }
 
-export const createVoucher = async (SQLClient, { label, description, pointsNumber, picture }) => {  //OK
+export const createVoucher = async (SQLClient, { label, description, pointsNumber, picture }) => {
     return await SQLClient.query('INSERT INTO "voucher" (label, description, points_number, picture) VALUES ($1, $2, $3, $4)', [label, description, pointsNumber, picture]);
 }
 
-export	const updateVoucher = async (SQLClient, { label, description, pointsNumber, picture }, labelUpdate) => {   //OK
+export	const updateVoucher = async (SQLClient, { label, description, pointsNumber, picture }, labelUpdate) => {
     let query = 'UPDATE "voucher" SET';
     const querySet = [];
     const queryValues = [];
