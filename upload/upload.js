@@ -1,6 +1,5 @@
 import multer from 'multer';
 import fs from 'fs';
-import path from 'path';
 
 // Fonction pour créer des dossiers si nécessaire
 const createFolder = (folder) => {

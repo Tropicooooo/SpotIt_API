@@ -27,7 +27,8 @@ router.delete('/all-reports', deleteReport);
 router.get('/all-report', getAllReport);
 //router.patch('/all-report',reportUpload.single('picture'), MPV.report, updateReport);
 router.patch('/all-report',reportUpload.single('picture'), updateReport);
-router.post('/all-report',reportUpload.single('picture'), MPV.report, createReport);
+//router.post('/all-report',reportUpload.single('picture'), MPV.report, createReport);
+router.post('/all-report',reportUpload.single('picture'), createReport);
 
 router.get('/jobs', getJobs);
 router.get('/job', getJob);
