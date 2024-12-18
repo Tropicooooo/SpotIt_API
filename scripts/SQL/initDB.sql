@@ -1,100 +1,111 @@
--- node scripts/JS/initDB.js
-
-CREATE TABLE ProblemType (
-    Label VARCHAR(50) PRIMARY KEY,
-    Description TEXT NOT NULL,
-    EmergencyDegree INT NOT NULL
+DROP TABLE IF EXISTS role CASCADE;
+CREATE TABLE role (
+    label VARCHAR(50) PRIMARY KEY,
+    description TEXT NOT NULL
 );
 
-CREATE TABLE Problem (
-    ID SERIAL PRIMARY KEY,
-    Description TEXT NOT NULL,
-    Latitude DOUBLE PRECISION,
-    Longitude DOUBLE PRECISION,
-    Picture TEXT,
-    Status VARCHAR(20),
-    ReportDate DATE,
-    SolvedDate DATE,
-    ProblemTypeLabel VARCHAR(50),
-    FOREIGN KEY (ProblemTypeLabel) REFERENCES ProblemType(Label)
-);
-
-CREATE TABLE Role (
-    Label VARCHAR(50) PRIMARY KEY,
-    Description TEXT NOT NULL
-);
-
+DROP TABLE IF EXISTS "user" CASCADE;
 CREATE TABLE "user" (
-    Email VARCHAR(100) PRIMARY KEY,
-    FirstName VARCHAR(50),
-    LastName VARCHAR(50),
-    Password TEXT NOT NULL,
-    BirthDate DATE,
-    PhoneNumber VARCHAR(20),
-    CityLabel VARCHAR(50),
-    PostalCode VARCHAR(20),
-    StreetNumber INT,
-    StreetLabel VARCHAR(100),
-    PointsNumber INT DEFAULT 0,
-    RoleLabel VARCHAR(50),
-    FOREIGN KEY (RoleLabel) REFERENCES Role(Label)
+    email VARCHAR(100) PRIMARY KEY,
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    password TEXT NOT NULL,
+    birthdate DATE NOT NULL CHECK (birthdate <= CURRENT_DATE AND AGE(CURRENT_DATE, birthdate) >= INTERVAL '12 years'),
+    phone_number VARCHAR(10) NOT NULL CHECK(LENGTH(phone_number) = 10),
+    city_label VARCHAR(100) NOT NULL,
+    postal_code NUMERIC(4, 0) NOT NULL,
+    street_label VARCHAR(100) NOT NULL,
+    street_number INTEGER NOT NULL CHECK(street_number > 0),
+    points_number INTEGER DEFAULT 0,
+    role_label VARCHAR(50),
+    FOREIGN KEY (role_label) REFERENCES role(label)
 );
 
-CREATE TABLE Voucher (
-    Label VARCHAR(50) PRIMARY KEY,
-    Description TEXT NOT NULL,
-    PointsNumber INT NOT NULL
+INSERT INTO "user" (email, first_name, last_name, password, birthdate, phone_number, city_label, postal_code, street_label, street_number, points_number) 
+VALUES
+    ('alice.smith@gmail.com', 'Alice', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1990-04-15', '0123456789', 'Paris', 7500, 'Rue de Rivoli', 101, 150),
+    ('bob.johnson@hotmail.com', 'Bob', 'Johnson', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1985-12-01', '0123456780', 'Lyon', 6900, 'Avenue des Brotteaux', 205, 200),
+    ('claire.davis@outlook.com', 'Claire', 'Davis', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1982-06-22', '0123456790', 'Marseille', 1300, 'Boulevard de la Canebière', 150, 180),
+    ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1995-09-30', '0123456791', 'Toulouse', 3100, 'Rue du Taur', 58, 120),
+    ('emily.brown@orange.fr', 'Emily', 'Brown', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1988-11-18', '0123456792', 'Bordeaux', 3300, 'Place de la Bourse', 102, 90),
+    ('michael.wilson@yahoo.fr', 'Michael', 'Wilson', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1987-03-03', '0123456793', 'Nice', 6666, 'Avenue Jean Médecin', 89, 250),
+    ('sophie.martin@free.fr', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1993-07-12', '0123456794', 'Lille', 5900, 'Rue de la République', 44, 300),
+    ('david.moore@gmail.com', 'David', 'Moore', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1991-02-27', '0123456795', 'Paris', 7501, 'Rue de la Paix', 73, 50),
+    ('lucy.martinez@hotmail.fr', 'Lucy', 'Martinez', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1990-08-21', '0123456796', 'Strasbourg', 6700, 'Place Kléber', 15, 120),
+    ('mark.taylor@live.com', 'Mark', 'Taylor', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1980-01-11', '0123456797', 'Nantes', 4400, 'Quai de la Fosse', 256, 75),
+    ('lisa.anderson@gmail.com', 'Lisa', 'Anderson', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1992-05-14', '0123456798', 'Montpellier', 3400, 'Avenue du Peyrou', 93, 130),
+    ('kevin.thompson@gmail.com', 'Kevin', 'Thompson', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1989-04-10', '0123456799', 'Rennes', 3500, 'Place de la République', 203, 200),
+    ('chloe.white@outlook.fr', 'Chloe', 'White', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1994-10-05', '0123456800', 'Grenoble', 3800, 'Rue Félix Viallet', 82, 180),
+    ('oliver.harris@orange.fr', 'Oliver', 'Harris', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1986-02-28', '0123456801', 'Lyon', 6901, 'Rue Victor Hugo', 140, 100),
+    ('isabelle.garcia@aol.com', 'Isabelle', 'Garcia', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1983-11-17', '0123456802', 'Le Havre', 7660, 'Boulevard de Strasbourg', 67, 70),
+    ('andrew.jackson@outlook.com', 'Andrew', 'Jackson', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1990-12-02', '0123456803', 'Lille', 5910, 'Rue Faidherbe', 89, 90),
+    ('sarah.clark@live.fr', 'Sarah', 'Clark', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1992-01-30', '0123456804', 'Marseille', 1301, 'Cours Julien', 120, 50),
+    ('peter.lewis@yahoo.fr', 'Peter', 'Lewis', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1985-05-25', '0123456805', 'Paris', 7502, 'Rue de Charonne', 54, 60),
+    ('amelia.king@gmail.com', 'Amelia', 'King', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1993-07-06', '0123456806', 'Nice', 6666, 'Rue du Vieux-Nice', 67, 140),
+    ('james.walker@hotmail.com', 'James', 'Walker', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1987-10-03', '0123456807', 'Paris', 7500, 'Place des Vosges', 22, 300),
+    ('anna.taylor@free.fr', 'Anna', 'Taylor', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1989-09-16', '0123456808', 'Lyon', 6902, 'Place Bellecour', 77, 180),
+    ('nathan.martin@live.com', 'Nathan', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1981-12-05', '0123456809', 'Bordeaux', 3301, 'Cours de l''Intendance', 88, 120),
+    ('martha.jones@aol.com', 'Martha', 'Jones', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1994-04-20', '0123456810', 'Toulouse', 3101, 'Boulevard Lascrosses', 99, 80),
+    ('charles.moore@outlook.fr', 'Charles', 'Moore', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1984-08-14', '0123456811', 'Strasbourg', 6701, 'Rue de l''Église', 45, 250),
+    ('susan.lee@gmail.com', 'Susan', 'Lee', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1982-02-01', '0123456812', 'Paris', 7504, 'Rue de la Montagne Sainte-Geneviève', 34, 100),
+    ('victor.williams@outlook.com', 'Victor', 'Boudin', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1991-01-23', '0123456813', 'Marseille', 1302, 'Rue de la République', 67, 200),
+    ('carol.green@hotmail.com', 'Carol', 'Green', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1983-06-17', '0123456814', 'Nice', 0602, 'Avenue Félix Faure', 53, 250),
+    ('ethan.adams@gmail.com', 'Ethan', 'Adams', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1987-03-11', '0123456815', 'Toulouse', 3102, 'Place du Capitole', 10, 220),
+    ('michael.martinez@aol.com', 'Michael', 'Martinez', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1990-05-05', '0123456816', 'Lille', 5900, 'Rue Nationale', 32, 80),
+    ('lily.evans@gmail.com', 'Lily', 'Evans', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1986-09-09', '0123456817', 'Bordeaux', 3302, 'Quai des Chartrons', 101, 170),
+    ('ryan.hernandez@outlook.com', 'Ryan','Reynolds', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1995-04-21', '0123456818', 'Marseille', 1303, 'Place de la Joliette', 59, 250),
+    ('olivia.perez@orange.fr', 'Olivia', 'Perez', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1988-10-16', '0123456819', 'Rennes', 3500, 'Rue de la Visitation', 12, 90),
+    ('jackson.rodriguez@gmail.com', 'Jackson', 'Rodriguez', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1992-06-09', '0123456820', 'Strasbourg', 6700, 'Place de la République', 99, 50),
+    ('lucas.carter@hotmail.com', 'Lucas', 'Carter', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1985-11-02', '0123456821', 'Lyon', 6900, 'Boulevard de la Croix-Rousse', 35, 200);
+
+DROP TABLE IF EXISTS problem_type CASCADE;
+CREATE TABLE problem_type (
+    label VARCHAR(50) PRIMARY KEY,
+    description TEXT NOT NULL,
+    emergency_degree INT NOT NULL
 );
 
-CREATE TABLE UserVoucher (
-    Code VARCHAR(50) PRIMARY KEY,
-    ClaimDate DATE,
-    ExpirationDate DATE,
-    UserEmail VARCHAR(100),
-    VoucherLabel VARCHAR(50),
-    FOREIGN KEY (UserEmail) REFERENCES "User"(Email),
-    FOREIGN KEY (VoucherLabel) REFERENCES Voucher(Label)
+DROP TABLE IF EXISTS problem CASCADE;
+CREATE TABLE problem (
+    id SERIAL PRIMARY KEY,
+    description TEXT NOT NULL,
+    latitude DOUBLE PRECISION,
+    longitude DOUBLE PRECISION,
+    picture TEXT,
+    status VARCHAR(20) DEFAULT 'En attente',
+    report_date DATE,
+    solved_date DATE,
+    problem_type_label VARCHAR(50),
+    user_email VARCHAR(100),
+    FOREIGN KEY (problem_type_label) REFERENCES problem_type(label),
+    FOREIGN KEY (user_email) REFERENCES "user"(email)
 );
 
-CREATE TABLE Job (
-    UserEmail VARCHAR(100),
-    ProblemID INT,
-    JobDate DATE,
-    PRIMARY KEY (UserEmail, ProblemID),
-    FOREIGN KEY (UserEmail) REFERENCES "User"(Email),
-    FOREIGN KEY (ProblemID) REFERENCES Problem(ID)
+
+DROP TABLE IF EXISTS voucher CASCADE;
+CREATE TABLE voucher (
+    label VARCHAR(50) PRIMARY KEY,
+    description TEXT NOT NULL,
+    points_required INT NOT NULL
 );
 
-INSERT INTO ProblemType (Label, Description, EmergencyDegree) VALUES
-('WaterLeak', 'Fuite d eau', 3),
-('ElectricIssue', 'Probleme electrique', 4),
-('RoadDamage', 'Dommage a la chaussee', 2);
+DROP TABLE IF EXISTS user_voucher CASCADE;
+CREATE TABLE user_voucher (
+    code VARCHAR(50) PRIMARY KEY,
+    claim_date DATE,
+    expiration_date DATE,
+    user_email VARCHAR(100),
+    voucher_label VARCHAR(50),
+    FOREIGN KEY (user_email) REFERENCES "user"(email),
+    FOREIGN KEY (voucher_label) REFERENCES voucher(label)
+);
 
-INSERT INTO Problem (Description, Latitude, Longitude, Picture, Status, ReportDate, SolvedDate, ProblemTypeLabel) VALUES
-('Fuite d eau importante', 50.8466, 4.3528, 'waterleak.jpg', 'Open', '2024-11-01', NULL, 'WaterLeak'),
-('Panne electrique dans le quartier', 50.8503, 4.3517, 'electric.jpg', 'In Progress', '2024-11-05', NULL, 'ElectricIssue'),
-('Trou profond sur la route', 50.8472, 4.3495, 'road.jpg', 'Closed', '2024-11-07', '2024-11-10', 'RoadDamage');
-
-INSERT INTO Role (Label, Description) VALUES
-('Admin', 'Administrateur ayant acces total'),
-('User', 'Utilisateur simple'),
-('Technician', 'Technicien pour resoudre les problemes');
-
-INSERT INTO "User" (Email, FirstName, LastName, Password, BirthDate, PhoneNumber, CityLabel, PostalCode, StreetNumber, StreetLabel, PointsNumber, RoleLabel) VALUES
-('admin@example.com', 'Alice', 'Admin', '$2b$10$hashpassword', '1990-01-01', '0489123456', 'Bruxelles', '1000', 12, 'Rue Centrale', 100, 'Admin'),
-('user1@example.com', 'Bob', 'User', '$2b$10$hashpassword', '1995-05-15', '0489345678', 'Liège', '4000', 5, 'Rue de la Paix', 20, 'User'),
-('tech1@example.com', 'Charlie', 'Tech', '$2b$10$hashpassword', '1985-09-09', '0489567890', 'Namur', '5000', 3, 'Rue du Travail', 10, 'Technician');
-
-INSERT INTO Voucher (Label, Description, PointsNumber) VALUES
-('CoffeeVoucher', 'Bon pour un cafe gratuit', 10),
-('MealVoucher', 'Bon pour un repas gratuit', 30),
-('GiftCard', 'Bon pour une carte cadeau', 50);
-
-INSERT INTO UserVoucher (Code, ClaimDate, ExpirationDate, UserEmail, VoucherLabel) VALUES
-('VCH001', '2024-10-01', '2025-01-01', 'user1@example.com', 'CoffeeVoucher'),
-('VCH002', '2024-11-01', '2025-02-01', 'user1@example.com', 'MealVoucher'),
-('VCH003', '2024-11-05', '2025-03-05', 'tech1@example.com', 'GiftCard');
-
-INSERT INTO Job (UserEmail, ProblemID, JobDate) VALUES
-('tech1@example.com', 1, '2024-11-02'),
-('tech1@example.com', 2, '2024-11-06');
+DROP TABLE IF EXISTS job CASCADE;
+CREATE TABLE job (
+    user_email VARCHAR(100),
+    problem_id INT,
+    job_date DATE,
+    PRIMARY KEY (user_email, problem_id),
+    FOREIGN KEY (user_email) REFERENCES "user"(email),
+    FOREIGN KEY (problem_id) REFERENCES problem(id)
+);
