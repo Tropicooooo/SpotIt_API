@@ -9,8 +9,6 @@ import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getAllReport
 import { configureUpload } from '../upload/upload.js';
 import path from 'path';
 
-import { configureUpload } from '../upload/upload.js';
-
 const router = Router();
 
 const vouchersFolder = path.join(new URL(import.meta.url).pathname, '../../uploads/vouchers');
