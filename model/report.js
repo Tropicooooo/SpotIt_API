@@ -57,12 +57,45 @@ export const getAllReports = async (SQLClient, { page = 1, limit = 10 }) => {
 
 export const getAllReport = async (SQLClient, { id }) => {
   const searchId = `${id}%`; // Recherche les IDs commençant par "id"
-  const { rows } = await SQLClient.query(
-      'SELECT * FROM Problem WHERE CAST(id AS TEXT) LIKE $1',
+  
+  try {
+    const { rows } = await SQLClient.query(
+      `SELECT 
+          P.id AS "id",
+          TO_CHAR(P.report_date, 'YYYY-MM-DD') AS "report_date",
+          P.status AS "status",
+          CONCAT(P.latitude, ', ', P.longitude) AS "address",
+          P.latitude AS "latitude",
+          P.longitude AS "longitude",
+          P.problem_type_label AS "problemtypelabel",
+          P.user_email AS "userEmail",
+          J.user_email AS "responsable",
+          P.picture AS "picture",
+          P.description AS "description",
+          TO_CHAR(P.solved_date, 'YYYY-MM-DD') AS "solved_date"
+       FROM problem P
+       LEFT JOIN job J ON P.id = J.problem_id
+       WHERE CAST(P.id AS TEXT) LIKE $1`, // Recherche par ID
       [searchId]
-  );
+    );
 
-  return rows; // Retourne tous les résultats
+    // Ajouter la latitude et la longitude converties en adresse
+    const reportsWithAddress = await Promise.all(
+      rows.map(async (report) => {
+        const { latitude, longitude } = report;
+        const geocodedAddress = await reverseGeocode(latitude, longitude);
+        return {
+          ...report,
+          geocodedaddress: geocodedAddress, // Adresse géocodée
+        };
+      })
+    );
+    
+    return reportsWithAddress; // Retourne les résultats avec les adresses géocodées
+  } catch (err) {
+    console.error('Error fetching reports', err);
+    return []; // En cas d'erreur, retourne un tableau vide
+  }
 };
 
 

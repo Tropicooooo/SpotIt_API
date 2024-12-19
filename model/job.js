@@ -47,14 +47,49 @@ export const getJobs = async (SQLClient, { page = 1, limit = 10, email }) => {
          }
 };
 
+export const getJob = async (SQLClient, { id }) => {
+  const searchId = `${id}%`; // Recherche les IDs commençant par "id"
+  
+  try {
+    const { rows } = await SQLClient.query(
+      `SELECT 
+          p.id AS "id",
+          TO_CHAR(p.report_date, 'YYYY-MM-DD') AS "report_date",
+          p.status AS "status",
+          CONCAT(p.latitude, ', ', p.longitude) AS "address",
+          p.latitude AS "latitude",
+          p.longitude AS "longitude",
+          p.problem_type_label AS "problemtypelabel",
+          p.user_email AS "userEmail",
+          j.user_email AS "responsable",
+          p.picture AS "picture",
+          p.description AS "description",
+          TO_CHAR(p.solved_date, 'YYYY-MM-DD') AS "solved_date"
+       FROM job j
+       JOIN problem p ON j.problem_id = p.id
+       WHERE CAST(j.problem_id AS TEXT) LIKE $1`, // Recherche par ID de problème
+      [searchId]
+    );
 
-
-
-export const getJob = async (SQLClient, { id}) => {
-    const searchId = `${id}%`;
-    const { rows } = await SQLClient.query(`SELECT p.* FROM Job j JOIN Problem p ON j.Problem_ID = p.ID WHERE CAST(j.Problem_ID AS TEXT) LIKE $1`, [searchId]);
-    return rows;
+    // Ajouter la latitude et la longitude converties en adresse
+    const jobsWithAddress = await Promise.all(
+      rows.map(async (job) => {
+        const { latitude, longitude } = job;
+        const geocodedAddress = await reverseGeocode(latitude, longitude);
+        return {
+          ...job,
+          geocodedaddress: geocodedAddress, // Adresse géocodée
+        };
+      })
+    );
+    
+    return jobsWithAddress; // Retourne les résultats avec les adresses géocodées
+  } catch (err) {
+    console.error('Error fetching jobs', err);
+    return []; // En cas d'erreur, retourne un tableau vide
+  }
 };
+
 
 export const updateJob = async (SQLClient, { id, report_date, status, solved_date, geocodedaddress, problemtypelabel, userEmail, description }) => {
   console.log(id, status, geocodedaddress, problemtypelabel, description, solved_date, report_date, userEmail);
