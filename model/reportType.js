@@ -1,4 +1,4 @@
-export const getReportType = async (SQLClient, { page = 1, limit = 10 }) => {
+export const getReportTypes = async (SQLClient, { page = 1, limit = 10 }) => {
     const { rows } = await SQLClient.query(
       'SELECT * FROM problem_type LIMIT $1 OFFSET $2', [limit, (page - 1) * limit]
     );

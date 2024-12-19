@@ -5,7 +5,7 @@ import { getUserVouchers, getUserVoucher, createUserVoucher, deleteUserVoucher, 
 import { managerValidatorMiddleware as MPV } from '../middleware/validation.js';
 import {checkJWT} from '../middleware/identification/jwt.js';
 import {manager, employee, admin} from '../middleware/authorization/mustBe.js';
-import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getAllReports, getAllReport, updateReport, createReport,getJobs,getJob,updateJob, deleteReport, getReportType, getEmployeesName,updateReportType,createReportType, getAllReportType ,deleteReportType, getUsersName} from '../controler/manager.js';
+import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getAllReports, getAllReport, updateReport, createReport,getJobs,getJob,updateJob, deleteReport, getReportTypes, getEmployeesName,updateReportType,createReportType, getAllReportType ,deleteReportType, getUsersName} from '../controler/manager.js';
 import { configureUpload } from '../upload/upload.js';
 import path from 'path';
 
@@ -61,7 +61,7 @@ router.patch('/job',checkJWT , employee, reportUpload.single('picture'), updateJ
 
 router.get('/reporttype',checkJWT , employee, getAllReportType);
 
-router.get('/all-report-type', checkJWT , admin, getReportType);
+router.get('/all-report-type', checkJWT , admin, getReportTypes);
 router.patch('/all-report-type', checkJWT , admin, MPV.reportType,updateReportType);
 router.post('/all-report-type', checkJWT , admin,MPV.reportType, createReportType);
 router.delete('/all-report-type',checkJWT , admin, deleteReportType);
