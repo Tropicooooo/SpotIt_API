@@ -1,20 +1,44 @@
 import Router from 'express-promise-router';
-import {getUsers, getUser,updateUser, deleteUser, createUser, getEmployees, deleteEmployee,updateEmployee, getEmployee, getAllReports, getAllReport, updateReport, createReport,getJobs,getJob,updateJob, deleteReport, getReportType, getEmployeesName,updateReportType,createReportType, getAllReportType ,deleteReportType} from '../controler/manager.js';
+import { getUsers, getUser,updateUser, deleteUser, createUser } from '../controler/manager.js';
+import { getVouchers, getVoucher, createVoucher, deleteVoucher, updateVoucher } from '../controler/manager.js';
+import { getUserVouchers, getUserVoucher, createUserVoucher, deleteUserVoucher, updateUserVoucher } from '../controler/manager.js';
 import { managerValidatorMiddleware as MPV } from '../middleware/validation.js';
+import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getAllReports, getAllReport, updateReport, createReport,getJobs,getJob,updateJob, deleteReport, getReportType, getEmployeesName,updateReportType,createReportType, getAllReportType ,deleteReportType} from '../controler/manager.js';
 import { configureUpload } from '../upload/upload.js';
 import path from 'path';
 
+import { configureUpload } from '../upload/upload.js';
+
+const router = Router();
+
+const vouchersFolder = path.join(new URL(import.meta.url).pathname, '../../uploads/vouchers');
+const voucherUpload = configureUpload(vouchersFolder);
 
 const REPORTS_FOLDER = path.join(new URL(import.meta.url).pathname, '../../uploads/reports');
 const reportUpload = configureUpload(REPORTS_FOLDER);
 
-const router = Router();
-
+// Routes pour les utilisateurs
 router.get('/users', getUsers);
 router.get('/user', getUser)
 router.delete('/user', deleteUser);
 router.patch('/user', MPV.user, updateUser);
 router.post('/user', MPV.user, createUser);
+
+// Routes pour les vouchers
+router.get('/vouchers', getVouchers);
+router.get('/voucher', getVoucher);
+//router.post('/voucher', voucherUpload.single('picture'), MPV.voucher, createVoucher);
+router.post('/voucher', voucherUpload.single('picture'), createVoucher);
+router.delete('/voucher', deleteVoucher);
+router.patch('/voucher', voucherUpload.single('picture'), updateVoucher);
+//router.patch('/voucher', voucherUpload.single('picture'), MPV.voucher, updateVoucher);
+
+// Routes pour les vouchers réclamés
+router.get('/user-vouchers', getUserVouchers);
+router.get('/user-voucher', getUserVoucher);
+router.post('/user-voucher', MPV.userVoucher, createUserVoucher);
+router.delete('/user-voucher', deleteUserVoucher);
+router.patch('/user-voucher', MPV.userVoucher, updateUserVoucher);
 
 router.get('/employees', getEmployees);
 router.get('/employee', getEmployee);
@@ -40,4 +64,5 @@ router.get('/all-report-type', getReportType);
 router.patch('/all-report-type', MPV.reportType,updateReportType);
 router.post('/all-report-type',MPV.reportType, createReportType);
 router.delete('/all-report-type',deleteReportType);
+
 export default router;
