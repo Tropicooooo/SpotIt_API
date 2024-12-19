@@ -385,3 +385,17 @@ export const deleteReportType = async (req, res) => {
         return res.sendStatus(500);
     }
 }
+
+
+export const getUsersName = async (req, res) => {
+    try {
+        const users = await userModel.getUsersName(pool);
+        if (!users) {
+            return res.sendStatus(404);
+        }
+        return res.send(users);
+    }
+    catch (e) {
+        return res.sendStatus(500);
+    }
+}
