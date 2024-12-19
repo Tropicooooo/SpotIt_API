@@ -2,13 +2,13 @@ import {hash} from '../util/index.js';
 
 export const getUsers = async (SQLClient, {page = 1, limit = 10 }) => {
     const offset = (page - 1) * limit; 
-    const {rows} = await SQLClient.query('SELECT email AS "email",first_name AS "firstname",last_name AS "lastname", TO_CHAR(birthdate, \'YYYY-MM-DD\') AS "birthdate",phone_number AS "phone",city_label AS "cityLabel", postal_code AS "postalCode", street_label AS "streetLabel", street_number AS "streetNumber", points_number AS "pointsNumber" FROM "user" LIMIT $1 OFFSET $2', [limit, offset]);    
+    const {rows} = await SQLClient.query('SELECT email AS "email",first_name AS "firstname",last_name AS "lastname", TO_CHAR(birthdate, \'YYYY-MM-DD\') AS "birthdate",phone_number AS "phone",city_label AS "cityLabel", postal_code AS "postalCode", street_label AS "streetLabel", street_number AS "streetNumber", points_number AS "pointsNumber", experience AS "experience", role_label AS "role" FROM "user" LIMIT $1 OFFSET $2', [limit, offset]);    
     return rows;
 };
 
 
 export const getUser = async (SQLClient, {email}) => {   
-    const {rows} = await SQLClient.query('SELECT email AS "email",first_name AS "firstname",last_name AS "lastname",birthdate AS "birthdate",phone_number AS "phone",city_label AS "cityLabel", postal_code AS "postalCode", street_label AS "streetLabel", street_number AS "streetNumber", points_number AS "pointsNumber" FROM "user" WHERE email = $1', [email]);
+    const {rows} = await SQLClient.query('SELECT email AS "email",first_name AS "firstname",last_name AS "lastname", TO_CHAR(birthdate, \'YYYY-MM-DD\') AS "birthdate",phone_number AS "phone",city_label AS "cityLabel", postal_code AS "postalCode", street_label AS "streetLabel", street_number AS "streetNumber", points_number AS "pointsNumber", experience AS "experience", role_label AS "role" FROM "user" WHERE email = $1', [email]);
     return rows[0];
 };
 
@@ -27,7 +27,7 @@ export const createUser = async (SQLClient, {email, firstname, lastname, passwor
     }
 
 export	const updateUser = async (SQLClient,{email, firstname, lastname, password, 
-    birthdate, phone, cityLabel, postalCode, streetLabel, streetNumber, pointsNumber}) => { 
+    birthdate, phone, cityLabel, postalCode, streetLabel, streetNumber, pointsNumber, experience, role = "NULL"}) => { 
     
     let query = 'UPDATE "user" SET ';
     const querySet = [];
@@ -76,7 +76,19 @@ export	const updateUser = async (SQLClient,{email, firstname, lastname, password
         queryValues.push(pointsNumber);
         querySet.push(`points_number = $${queryValues.length}`);
     }
-    if(queryValues.length > 0){
+    if(experience){
+        queryValues.push(experience);
+        querySet.push(`experience = $${queryValues.length}`);
+    }
+    
+    if(role){
+        queryValues.push(role);
+        querySet.push(`role_label = $${queryValues.length}`);
+    }else{
+        querySet.push(`role_label = NULL`);
+    }
+
+    if(queryValues.length > 0 || !role){
         queryValues.push(email);
         query += `${querySet.join(', ')} WHERE email = $${queryValues.length}`;
         return await SQLClient.query(query, queryValues);

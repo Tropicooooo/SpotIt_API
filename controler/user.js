@@ -10,19 +10,10 @@ export const getUser = async (req, res)=> {
            res.sendStatus(404);
        }
    } catch (err) {
+    console.log(err);
+    
        res.sendStatus(500);
    }
-};
-
-export const getUserInfo = async (req, res) => {
-    try {
-        const info = await userModel.getUserInfo(pool);
-        console.log(info);
-        
-        res.send(info);
-    } catch (e) {
-        res.sendStatus(500);
-    }
 };
 
 export const updateUser = async (req, res) => {
