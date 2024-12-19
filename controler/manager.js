@@ -44,7 +44,7 @@ export const deleteUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
     try {
-        await userModel.updateUser(pool, req.val, req.body?.emailUpdate);
+        await userModel.updateUser(pool, req.body);
         return res.sendStatus(204);
     } catch (err) {
         return res.sendStatus(500);
@@ -53,7 +53,7 @@ export const updateUser = async (req, res) => {
 
 export const createUser = async (req, res) => {
     try {        
-        await userModel.createUser(pool, req.val, req.body?.emailUpdate);
+        await userModel.createUser(pool, req.body);
         return res.sendStatus(204);
     } catch (err) {
         return res.sendStatus(500);

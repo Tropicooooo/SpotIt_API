@@ -18,14 +18,13 @@ const REPORTS_FOLDER = path.join(new URL(import.meta.url).pathname, '../../uploa
 const reportUpload = configureUpload(REPORTS_FOLDER);
 
 // Routes pour les utilisateurs
-router.get('/users', getUsers);
-router.get('/user', getUser)
-router.delete('/user', deleteUser);
-router.patch('/userWithoutPassword', checkJWT ,manager,MPV.updateWithoutPassword, updateUser);
-router.patch('/user', MPV.user, updateUser);
-router.post('/user', MPV.user, createUser);
+router.get('/users', checkJWT , manager,  getUsers);
+router.get('/user', checkJWT , manager,  getUser)
+router.delete('/user', checkJWT , manager,  deleteUser);
+router.patch('/userWithoutPassword', checkJWT , manager, MPV.updateWithoutPassword, updateUser);
+router.patch('/user', MPV.user,  checkJWT , manager, updateUser);
+router.post('/user', MPV.user,  checkJWT , manager, createUser);
 router.get('/userslist', getUsersName);
-
 // Routes pour les vouchers
 router.get('/vouchers', getVouchers);
 router.get('/voucher', getVoucher);
