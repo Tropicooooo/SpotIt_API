@@ -1,7 +1,11 @@
-// manager.js (controller)
+// src/controler/manager.js
 import { pool } from "../database/database.js";
 import * as userModel from "../model/user.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { authMiddleware } from "../middleware/authMiddleware.js"; // Importer le middleware d'authentification
+
+const SECRET_KEY = "votre_cle_secrete"; // Remplacez par votre propre clé secrète
 
 export const getUsers = async (req, res) => {
   try {
@@ -77,11 +81,54 @@ export const loginUser = async (req, res) => {
     const { email, password } = req.body;
     const user = await userModel.getUserByEmail(pool, { email });
     if (user && (await bcrypt.compare(password, user.password))) {
-      res.sendStatus(200);
+      // Générer un token JWT
+      const token = jwt.sign(
+        { userId: user.id, email: user.email, role: user.role },
+        SECRET_KEY
+      );
+      res.json({
+        token,
+        userId: user.id,
+        role: user.role,
+      });
     } else {
-      res.sendStatus(401);
+      res.status(401).send({ message: "Email ou mot de passe incorrect" });
     }
   } catch (err) {
     res.sendStatus(500);
   }
 };
+
+// Protéger les routes avec le middleware d'authentification
+export const protectedRoutes = [
+  {
+    method: "GET",
+    path: "/users",
+    handler: getUsers,
+    middleware: authMiddleware,
+  },
+  {
+    method: "GET",
+    path: "/user",
+    handler: getUser,
+    middleware: authMiddleware,
+  },
+  {
+    method: "DELETE",
+    path: "/user",
+    handler: deleteUser,
+    middleware: authMiddleware,
+  },
+  {
+    method: "PATCH",
+    path: "/user",
+    handler: updateUser,
+    middleware: authMiddleware,
+  },
+  {
+    method: "POST",
+    path: "/user",
+    handler: createUser,
+    middleware: authMiddleware,
+  },
+];
