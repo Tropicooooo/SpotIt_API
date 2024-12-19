@@ -22,9 +22,11 @@ router.post('/user', MPV.user, createUser);
 // Routes pour les vouchers
 router.get('/vouchers', getVouchers);
 router.get('/voucher', getVoucher);
-router.post('/voucher', voucherUpload.single('image'), MPV.voucher, createVoucher);
+//router.post('/voucher', voucherUpload.single('picture'), MPV.voucher, createVoucher);
+router.post('/voucher', voucherUpload.single('picture'), createVoucher);
 router.delete('/voucher', deleteVoucher);
-router.patch('/voucher', MPV.voucher, updateVoucher);
+router.patch('/voucher', voucherUpload.single('picture'), updateVoucher);
+//router.patch('/voucher', voucherUpload.single('picture'), MPV.voucher, updateVoucher);
 
 // Routes pour les vouchers réclamés
 router.get('/user-vouchers', getUserVouchers);

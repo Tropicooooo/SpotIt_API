@@ -1,22 +1,22 @@
 import multer from 'multer';
 import fs from 'fs';
 
+// Fonction pour créer des dossiers si nécessaire
 const createFolder = (folder) => {
   if (!fs.existsSync(folder)) {
     fs.mkdirSync(folder, { recursive: true });
   }
 };
 
+// Fonction pour configurer Multer avec un dossier cible
 export const configureUpload = (folder) => {
   createFolder(folder);
-
   const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, folder);
     },
     filename: (req, file, cb) => {
-      const uniqueName = `${Date.now()}-${file.originalname}`;
-      cb(null, uniqueName);
+      cb(null, file.originalname);
     },
   });
 

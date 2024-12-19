@@ -24,7 +24,7 @@ export const createVoucher = async (SQLClient, { label, description, pointsNumbe
 }
 
 export	const updateVoucher = async (SQLClient, { label, description, pointsNumber, picture }, labelUpdate) => {
-    let query = 'UPDATE "voucher" SET';
+    let query = 'UPDATE "voucher" SET ';
     const querySet = [];
     const queryValues = [];
     if(labelUpdate && label !== labelUpdate){

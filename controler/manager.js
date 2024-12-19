@@ -94,7 +94,8 @@ export const deleteVoucher = async (req, res) => {
 
 export const updateVoucher = async (req, res) => {
     try {
-        await voucherModel.updateVoucher(pool, req.val, req.body?.labelUpdate);  //OK
+        console.log(req.body);
+        await voucherModel.updateVoucher(pool, req.body, req.body?.labelUpdate);  //OK
         return res.sendStatus(204);
     } catch (err) {
         return res.sendStatus(500);
