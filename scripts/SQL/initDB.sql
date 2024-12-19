@@ -50,7 +50,8 @@ DROP TABLE IF EXISTS voucher CASCADE;
 CREATE TABLE voucher (
     label VARCHAR(50) PRIMARY KEY,
     description TEXT NOT NULL,
-    points_required INT NOT NULL
+    points_required INT NOT NULL,
+    picture VARCHAR(200) NOT NULL
 );
 
 DROP TABLE IF EXISTS user_voucher CASCADE;

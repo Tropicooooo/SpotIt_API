@@ -1,11 +1,11 @@
 export const getVouchers = async (SQLClient, { page = 1, limit = 10 }) => {
     const offset = (page - 1) * limit; 
-    const {rows} = await SQLClient.query('SELECT label AS "label", description AS "description", points_number AS "pointsNumber", picture AS "picture" FROM "voucher" LIMIT $1 OFFSET $2', [limit, offset]);    
+    const {rows} = await SQLClient.query('SELECT label AS "label", description AS "description", points_required AS "pointsNumber", picture AS "picture" FROM "voucher" LIMIT $1 OFFSET $2', [limit, offset]);    
     return rows;
 };
 
 export const getVoucher = async (SQLClient, {label}) => { 
-    const {rows} = await SQLClient.query('SELECT label AS "label", description AS "description", points_number AS "pointsNumber", picture AS "picture" FROM "voucher" WHERE label = $1', [label]);
+    const {rows} = await SQLClient.query('SELECT label AS "label", description AS "description", points_required AS "pointsNumber", picture AS "picture" FROM "voucher" WHERE label = $1', [label]);
     return rows[0];
 };
 
