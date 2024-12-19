@@ -3,6 +3,8 @@ import { getUsers, getUser,updateUser, deleteUser, createUser } from '../control
 import { getVouchers, getVoucher, createVoucher, deleteVoucher, updateVoucher } from '../controler/manager.js';
 import { getUserVouchers, getUserVoucher, createUserVoucher, deleteUserVoucher, updateUserVoucher } from '../controler/manager.js';
 import { managerValidatorMiddleware as MPV } from '../middleware/validation.js';
+import {checkJWT} from '../middleware/identification/jwt.js';
+import {manager} from '../middleware/authorization/mustBe.js';
 import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getAllReports, getAllReport, updateReport, createReport,getJobs,getJob,updateJob, deleteReport, getReportType, getEmployeesName,updateReportType,createReportType, getAllReportType ,deleteReportType} from '../controler/manager.js';
 import { configureUpload } from '../upload/upload.js';
 import path from 'path';
@@ -21,6 +23,7 @@ const reportUpload = configureUpload(REPORTS_FOLDER);
 router.get('/users', getUsers);
 router.get('/user', getUser)
 router.delete('/user', deleteUser);
+router.patch('/userWithoutPassword', checkJWT ,manager,MPV.updateWithoutPassword, updateUser);
 router.patch('/user', MPV.user, updateUser);
 router.post('/user', MPV.user, createUser);
 
