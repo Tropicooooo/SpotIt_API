@@ -107,8 +107,18 @@ export const updateVoucher = async (req, res) => {
 };
 
 export const createVoucher = async (req, res) => {
-    try {        
-        await voucherModel.createVoucher(pool, req.val, req.body?.labelUpdate);  //OK
+    try {       
+
+        const {label, description, pointsRequired} = req.body;
+
+        const picture = req.file ? `/uploads/vouchers/${req.file.filename}` : null;
+
+        await voucherModel.createVoucher(pool, {
+            label,
+            description,
+            pointsRequired,
+            picture
+        });
         return res.sendStatus(204);
     } catch (err) {
         return res.sendStatus(500);
