@@ -342,9 +342,9 @@ export const getAllReportType = async (req, res) => {
     }
 };
 
-export const getReportType = async (req, res) => {
+export const getReportTypes = async (req, res) => {
     try {
-        const problemType = await reportTypeModel.getReportType(pool, req.query);
+        const problemType = await reportTypeModel.getReportTypes(pool, req.query);
         const total = await reportTypeModel.getTotalReportType(pool);
         if (!problemType) {
             return res.sendStatus(404);
