@@ -61,7 +61,7 @@ router.patch('/job',checkJWT , employee, reportUpload.single('picture'), updateJ
 
 router.get('/reporttype',checkJWT , employee, getAllReportType);
 
-router.get('/all-report-type', checkJWT , admin, getReportTypes);
+router.get('/all-report-types', checkJWT , admin, getReportTypes);
 router.patch('/all-report-type', checkJWT , admin, MPV.reportType,updateReportType);
 router.post('/all-report-type', checkJWT , admin,MPV.reportType, createReportType);
 router.delete('/all-report-type',checkJWT , admin, deleteReportType);

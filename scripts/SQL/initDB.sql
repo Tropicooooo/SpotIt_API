@@ -7,15 +7,6 @@ DROP TABLE IF EXISTS "user_voucher" CASCADE;
 DROP TABLE IF EXISTS "job" CASCADE;
 
 CREATE TABLE "role" (
-DROP TABLE IF EXISTS "role" CASCADE;
-DROP TABLE IF EXISTS "user" CASCADE;
-DROP TABLE IF EXISTS "problem_type" CASCADE;
-DROP TABLE IF EXISTS "problem" CASCADE;
-DROP TABLE IF EXISTS "voucher" CASCADE;
-DROP TABLE IF EXISTS "user_voucher" CASCADE;
-DROP TABLE IF EXISTS "job" CASCADE;
-
-CREATE TABLE "role" (
     label VARCHAR(50) PRIMARY KEY,
     description TEXT NOT NULL
 );
@@ -38,13 +29,11 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "problem_type" (
-CREATE TABLE "problem_type" (
     label VARCHAR(50) PRIMARY KEY,
     description TEXT NOT NULL,
     emergency_degree INT NOT NULL
 );
 
-CREATE TABLE "problem" (
 CREATE TABLE "problem" (
     id SERIAL PRIMARY KEY,
     description TEXT NOT NULL,
@@ -60,7 +49,7 @@ CREATE TABLE "problem" (
     FOREIGN KEY (user_email) REFERENCES "user"(email)
 );
 
-CREATE TABLE "voucher" (
+
 CREATE TABLE "voucher" (
     label VARCHAR(50) PRIMARY KEY,
     description TEXT NOT NULL,
@@ -68,7 +57,6 @@ CREATE TABLE "voucher" (
     picture VARCHAR(200) NOT NULL
 );
 
-CREATE TABLE "user_voucher" (
 CREATE TABLE "user_voucher" (
     code VARCHAR(50) PRIMARY KEY,
     claim_date DATE,
@@ -80,7 +68,6 @@ CREATE TABLE "user_voucher" (
 );
 
 CREATE TABLE "job" (
-CREATE TABLE "job" (
     user_email VARCHAR(100),
     problem_id INT,
     job_date DATE,
@@ -90,13 +77,14 @@ CREATE TABLE "job" (
 );
 
 INSERT INTO "role" (label, description) VALUES
-INSERT INTO "role" (label, description) VALUES
     ('Admin', 'Administrateur'),
+    ('Manager', 'Manager'),
     ('Employee', 'Employé');
 
 INSERT INTO "user" (email, first_name, last_name, password, birthdate, phone_number, city_label, postal_code, street_label, street_number, points_number, experience, role_label) 
 VALUES
     ('alice.smith@gmail.com', 'Alice', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0123456789', 'Paris', 7500, 'Rue de Rivoli', 101, 150, 0, 'Admin'),
+    ('Martin.smith@gmail.com', 'Martin', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0123456789', 'Paris', 7500, 'Rue de Rivoli', 101, 150, 0, 'Manager'),
     ('bob.johnson@hotmail.com', 'Bob', 'Johnson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1985-12-01', '0123456780', 'Lyon', 6900, 'Avenue des Brotteaux', 205, 200,  0, 'Employee'),
     ('claire.davis@outlook.com', 'Claire', 'Davis', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1982-06-22', '0123456790', 'Marseille', 1300, 'Boulevard de la Canebière', 150, 180,  0, 'Employee'),
     ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1995-09-30', '0123456791', 'Toulouse', 3100, 'Rue du Taur', 58, 120,  0, 'Employee'),
@@ -104,7 +92,6 @@ VALUES
     ('michael.wilson@yahoo.be', 'Michael', 'Wilson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1987-03-03', '0123456793', 'Nice', 6666, 'Avenue Jean Médecin', 89, 250,  1500, NULL),
     ('sophie.martin@free.be', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1993-07-12', '0123456794', 'Lille', 5900, 'Rue de la République', 44, 300 ,  2500, NULL);
 
-INSERT INTO "problem_type" (label, description, emergency_degree) VALUES
 INSERT INTO "problem_type" (label, description, emergency_degree) VALUES
     ('water_leak', 'Fuite d''eau', 1),
     ('electricity_failure', 'Panne d''électricité', 2),
