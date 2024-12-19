@@ -19,7 +19,7 @@ export const getEmployees = async (SQLClient, {page = 1, limit = 10}) => {
             INNER JOIN role ON "user".role_label = role.label
             WHERE role.label = $1
             LIMIT $2 OFFSET $3;
-        `, ["Technician", limit, offset]);
+        `, ["Employee", limit, offset]);
 
         return rows;
     } catch (err) {
@@ -65,7 +65,7 @@ export const getTotalEmployees = async (SQLClient) => {
             FROM "user" AS u
             INNER JOIN role AS r ON u.role_label = r.label
             WHERE u.role_label = $1;
-        `, ["Technician"]);
+        `, ["Employee"]);
 
         return parseInt(rows[0].total, 10);
     } catch (err) {
@@ -122,7 +122,7 @@ export const getEmployeesName = async (SQLClient) => {
                 last_name AS "lastname" 
             FROM "user" 
             WHERE role_label = $1;
-        `, ["Technician"]);
+        `, ["Employee"]);
 
         return rows;
     } catch (err) {
