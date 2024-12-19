@@ -75,20 +75,22 @@ export const getTotalReports = async (SQLClient) => {
 
 export const addReport = async (
   SQLClient,
-  { status, latitude, longitude, user, description, reportdate, problemtypelabel, picture, responsable }
+  { status, userEmail, description, reportdate, problemtypelabel, picture, responsable, geocodedaddress }
 ) => {
   reportdate = reportdate || new Date().toISOString();
   try {
     // Démarrer la transaction
     await SQLClient.query('BEGIN');
 
+    const adresse = await geocodeAddress(geocodedaddress);
+    console.log('Adresse inversée:', adresse);
     // Insérer le rapport dans la table Problem
     const insertProblemQuery = `
       INSERT INTO Problem (Description, Latitude, Longitude, Problem_Type_Label, Status, Report_Date, Picture, User_Email) 
       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
       RETURNING ID
     `;
-    const insertProblemValues = [description, latitude, longitude, problemtypelabel, status, reportdate, picture, user];
+    const insertProblemValues = [description, adresse?.latitude, adresse?.longitude ,problemtypelabel, status, reportdate, picture, userEmail];
     const result = await SQLClient.query(insertProblemQuery, insertProblemValues);
 
     // Récupérer l'ID du rapport inséré

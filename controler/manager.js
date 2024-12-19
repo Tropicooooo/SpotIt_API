@@ -249,16 +249,16 @@ export const updateReport = async (req, res) => {
 export const createReport = async (req, res) => {
     try {
         console.log("create report", req.body);
-        const {status, reportdate, address, user, solveddate, description, problemtypelabel, responsable} = req.body;
+        const {status, report_date, userEmail, solved_date, description, problemtypelabel, responsable,geocodedaddress} = req.body;
 
         const picture = req.file ? `/uploads/reports/${req.file.filename}` : null;
 
         await reportModel.addReport(pool, {
             status,
-            reportdate,
-            address,
-            user,
-            solveddate,
+            report_date,
+            geocodedaddress,
+            userEmail,
+            solved_date,
             description,
             problemtypelabel,
             picture,
