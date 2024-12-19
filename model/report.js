@@ -241,41 +241,44 @@ export const updateReport = async (
   }
 };
 
-
 export const deleteReport = async (SQLClient, { id }) => {
   try {
     // Obtenir le chemin absolu pour __dirname
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
 
+    // Supprimer d'abord les enregistrements dans la table "job"
+    await SQLClient.query('DELETE FROM job WHERE problem_id = $1', [id]);
+    console.log(`Deleted all jobs associated with problem_id: ${id}`);
+
     // Requête pour obtenir le chemin de l'image depuis la base de données
     const result = await SQLClient.query('SELECT picture FROM Problem WHERE ID = $1', [id]);
     const picturePath = result.rows[0]?.picture;
 
     if (!picturePath) {
-      return;
+      console.warn(`No picture found for problem_id: ${id}`);
+    } else {
+      // Construire le chemin absolu vers l'emplacement réel sur le serveur
+      const fullPath = path.join(__dirname, '../../app/', picturePath);
+
+      // Supprimer le fichier
+      fs.unlink(fullPath, (err) => {
+        if (err) {
+          if (err.code === 'ENOENT') {
+            console.error(`File not found: ${fullPath}`);
+          } else {
+            console.error(`Failed to delete file: ${err.message}`);
+          }
+        } else {
+          console.log(`File deleted successfully at ${fullPath}`);
+        }
+      });
     }
 
-    // Construire le chemin absolu vers l'emplacement réel sur le serveur
-    const fullPath = path.join(__dirname, '../../app/', picturePath);
-
-    // Supprimer le fichier
-    fs.unlink(fullPath, (err) => {
-      if (err) {
-        if (err.code === 'ENOENT') {
-          console.error(`File not found: ${fullPath}`);
-        } else {
-          console.error(`Failed to delete file: ${err.message}`);
-        }
-      } else {
-        console.log(`File deleted successfully at ${fullPath}`);
-      }
-    });
-
-    // Ensuite, supprimer l'entrée dans la base de données
+    // Supprimer l'entrée dans la table "Problem"
     await SQLClient.query('DELETE FROM Problem WHERE ID = $1', [id]);
+    console.log(`Deleted problem with ID: ${id}`);
   } catch (error) {
     console.error('Database query or file deletion error:', error);
   }
 };
-
