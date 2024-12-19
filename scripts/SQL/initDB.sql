@@ -1,10 +1,15 @@
-DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS "role" CASCADE;
-DROP TABLE IF EXISTS "problem" CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
 DROP TABLE IF EXISTS "problem_type" CASCADE;
+DROP TABLE IF EXISTS "problem" CASCADE;
 DROP TABLE IF EXISTS "voucher" CASCADE;
 DROP TABLE IF EXISTS "user_voucher" CASCADE;
 DROP TABLE IF EXISTS "job" CASCADE;
+
+CREATE TABLE "role" (
+    label VARCHAR(50) PRIMARY KEY,
+    description TEXT NOT NULL
+);
 
 CREATE TABLE "user" (
     email VARCHAR(100) PRIMARY KEY,
@@ -23,9 +28,10 @@ CREATE TABLE "user" (
     FOREIGN KEY (role_label) REFERENCES role(label)
 );
 
-CREATE TABLE "role" (
+CREATE TABLE "problem_type" (
     label VARCHAR(50) PRIMARY KEY,
-    description TEXT NOT NULL
+    description TEXT NOT NULL,
+    emergency_degree INT NOT NULL
 );
 
 CREATE TABLE "problem" (
@@ -41,12 +47,6 @@ CREATE TABLE "problem" (
     user_email VARCHAR(100),
     FOREIGN KEY (problem_type_label) REFERENCES problem_type(label),
     FOREIGN KEY (user_email) REFERENCES "user"(email)
-);
-
-CREATE TABLE "problem_type" (
-    label VARCHAR(50) PRIMARY KEY,
-    description TEXT NOT NULL,
-    emergency_degree INT NOT NULL
 );
 
 CREATE TABLE "voucher" (
@@ -75,6 +75,10 @@ CREATE TABLE "job" (
     FOREIGN KEY (problem_id) REFERENCES problem(id)
 );
 
+INSERT INTO "role" (label, description) VALUES
+    ('Admin', 'Administrateur'),
+    ('Employee', 'Employé');
+
 INSERT INTO "user" (email, first_name, last_name, password, birthdate, phone_number, city_label, postal_code, street_label, street_number, points_number, role_label) 
 VALUES
     ('alice.smith@gmail.com', 'Alice', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1990-04-15', '0470123456', 'Namur', 5000, 'Rue du Ravioli', 101, 150, 'Admin'),
@@ -82,10 +86,6 @@ VALUES
     ('claire.davis@outlook.com', 'Claire', 'Davis', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1982-06-22', '0472123456', 'Arlon', 6700, 'Boulevard de la Framboise', 150, 180, 'Employee'),
     ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1995-09-30', '0473123456', 'Mons', 7000, 'Rue du Beurre', 58, 120, 'Employee'),
     ('emily.brown@orange.fr', 'Emily', 'Brown', '$argon2id$v=19$m=65536,t=3,p=4$ej/iYfi2zoqQyJkwcRkJNQ$NNfjIghgqDsVNUOMDlKGFZ1jDz2poHMfkD34i6WgT6c', '1988-11-18', '0474123456', 'Bouillon', 6830, 'Place de la Frite', 102, 90, 'Employee');
-
-INSERT INTO "role" (label, description) VALUES
-    ('Admin', 'Administrateur'),
-    ('Employee', 'Employé');
 
 INSERT INTO "problem_type" (label, description, emergency_degree) VALUES
     ('water_leak', 'Fuite d''eau', 1),
