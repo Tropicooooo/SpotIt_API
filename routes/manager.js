@@ -5,7 +5,7 @@ import { getUserVouchers, getUserVoucher, createUserVoucher, deleteUserVoucher, 
 import { managerValidatorMiddleware as MPV } from '../middleware/validation.js';
 import {checkJWT} from '../middleware/identification/jwt.js';
 import {manager} from '../middleware/authorization/mustBe.js';
-import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getAllReports, getAllReport, updateReport, createReport,getJobs,getJob,updateJob, deleteReport, getReportType, getEmployeesName,updateReportType,createReportType, getAllReportType ,deleteReportType} from '../controler/manager.js';
+import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getAllReports, getAllReport, updateReport, createReport,getJobs,getJob,updateJob, deleteReport, getReportType, getEmployeesName,updateReportType,createReportType, getAllReportType ,deleteReportType, getUsersName} from '../controler/manager.js';
 import { configureUpload } from '../upload/upload.js';
 import path from 'path';
 
@@ -24,7 +24,7 @@ router.delete('/user', checkJWT , manager,  deleteUser);
 router.patch('/userWithoutPassword', checkJWT , manager, MPV.updateWithoutPassword, updateUser);
 router.patch('/user', MPV.user,  checkJWT , manager, updateUser);
 router.post('/user', MPV.user,  checkJWT , manager, createUser);
-
+router.get('/userslist', getUsersName);
 // Routes pour les vouchers
 router.get('/vouchers', getVouchers);
 router.get('/voucher', getVoucher);

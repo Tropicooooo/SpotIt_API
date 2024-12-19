@@ -107,8 +107,18 @@ export const updateVoucher = async (req, res) => {
 };
 
 export const createVoucher = async (req, res) => {
-    try {        
-        await voucherModel.createVoucher(pool, req.val, req.body?.labelUpdate);  //OK
+    try {       
+
+        const {label, description, pointsRequired} = req.body;
+
+        const picture = req.file ? `/uploads/vouchers/${req.file.filename}` : null;
+
+        await voucherModel.createVoucher(pool, {
+            label,
+            description,
+            pointsRequired,
+            picture
+        });
         return res.sendStatus(204);
     } catch (err) {
         return res.sendStatus(500);
@@ -382,6 +392,20 @@ export const deleteReportType = async (req, res) => {
         await reportTypeModel.deleteReportType(pool, req.query);
         return res.sendStatus(204);
     } catch (err) {
+        return res.sendStatus(500);
+    }
+}
+
+
+export const getUsersName = async (req, res) => {
+    try {
+        const users = await userModel.getUsersName(pool);
+        if (!users) {
+            return res.sendStatus(404);
+        }
+        return res.send(users);
+    }
+    catch (e) {
         return res.sendStatus(500);
     }
 }

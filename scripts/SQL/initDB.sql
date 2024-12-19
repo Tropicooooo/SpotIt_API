@@ -7,6 +7,15 @@ DROP TABLE IF EXISTS "user_voucher" CASCADE;
 DROP TABLE IF EXISTS "job" CASCADE;
 
 CREATE TABLE "role" (
+DROP TABLE IF EXISTS "role" CASCADE;
+DROP TABLE IF EXISTS "user" CASCADE;
+DROP TABLE IF EXISTS "problem_type" CASCADE;
+DROP TABLE IF EXISTS "problem" CASCADE;
+DROP TABLE IF EXISTS "voucher" CASCADE;
+DROP TABLE IF EXISTS "user_voucher" CASCADE;
+DROP TABLE IF EXISTS "job" CASCADE;
+
+CREATE TABLE "role" (
     label VARCHAR(50) PRIMARY KEY,
     description TEXT NOT NULL
 );
@@ -29,11 +38,13 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "problem_type" (
+CREATE TABLE "problem_type" (
     label VARCHAR(50) PRIMARY KEY,
     description TEXT NOT NULL,
     emergency_degree INT NOT NULL
 );
 
+CREATE TABLE "problem" (
 CREATE TABLE "problem" (
     id SERIAL PRIMARY KEY,
     description TEXT NOT NULL,
@@ -50,12 +61,14 @@ CREATE TABLE "problem" (
 );
 
 CREATE TABLE "voucher" (
+CREATE TABLE "voucher" (
     label VARCHAR(50) PRIMARY KEY,
     description TEXT NOT NULL,
     points_required INT NOT NULL,
     picture VARCHAR(200) NOT NULL
 );
 
+CREATE TABLE "user_voucher" (
 CREATE TABLE "user_voucher" (
     code VARCHAR(50) PRIMARY KEY,
     claim_date DATE,
@@ -67,6 +80,7 @@ CREATE TABLE "user_voucher" (
 );
 
 CREATE TABLE "job" (
+CREATE TABLE "job" (
     user_email VARCHAR(100),
     problem_id INT,
     job_date DATE,
@@ -75,6 +89,7 @@ CREATE TABLE "job" (
     FOREIGN KEY (problem_id) REFERENCES problem(id)
 );
 
+INSERT INTO "role" (label, description) VALUES
 INSERT INTO "role" (label, description) VALUES
     ('Admin', 'Administrateur'),
     ('Employee', 'Employé');
@@ -89,6 +104,7 @@ VALUES
     ('michael.wilson@yahoo.be', 'Michael', 'Wilson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1987-03-03', '0123456793', 'Nice', 6666, 'Avenue Jean Médecin', 89, 250,  1500, NULL),
     ('sophie.martin@free.be', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1993-07-12', '0123456794', 'Lille', 5900, 'Rue de la République', 44, 300 ,  2500, NULL);
 
+INSERT INTO "problem_type" (label, description, emergency_degree) VALUES
 INSERT INTO "problem_type" (label, description, emergency_degree) VALUES
     ('water_leak', 'Fuite d''eau', 1),
     ('electricity_failure', 'Panne d''électricité', 2),

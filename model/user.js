@@ -96,3 +96,20 @@ export	const updateUser = async (SQLClient,{email, firstname, lastname, password
         throw new Error('No field given');
     }
 }
+
+
+export const getUsersName = async (SQLClient) => {
+    try {
+        const { rows } = await SQLClient.query(`
+            SELECT 
+                email AS "email", 
+                first_name AS "firstname", 
+                last_name AS "lastname" 
+            FROM "user"`
+        );
+        return rows;
+    } catch (err) {
+        console.error('Failed to get employees', err);
+        return [];
+    }
+};
