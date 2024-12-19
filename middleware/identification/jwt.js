@@ -3,7 +3,7 @@ import {verify} from '../../util/jwt.js';
 export const checkJWT = async (req, res, next) => {
     const authorize = req.get('authorization');
     if(authorize?.includes('Bearer')){
-        const jwtEncoded = authorize.split(' ')[1];
+        const jwtEncoded = authorize?.split(' ')[1];
         try {
             req.session = verify(jwtEncoded);
             next();

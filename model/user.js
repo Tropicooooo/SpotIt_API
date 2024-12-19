@@ -26,9 +26,9 @@ export const createUser = async (SQLClient, {email, firstname, lastname, passwor
        return await SQLClient.query('INSERT INTO "user" (email, first_name, last_name, password, birthdate, phone_number, city_label, postal_code, street_label, street_number, points_number) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',[email, firstname, lastname, await hash(password), birthdate, phone, cityLabel, postalCode, streetLabel, streetNumber, pointsNumber]);
     }
 
-export	const updateUser = async (SQLClient, {email, firstname, lastname, password, 
+export	const updateUser = async (SQLClient,{email, firstname, lastname, password, 
     birthdate, phone, cityLabel, postalCode, streetLabel, streetNumber, pointsNumber}) => { 
-
+    
     let query = 'UPDATE "user" SET ';
     const querySet = [];
     const queryValues = [];
