@@ -76,43 +76,53 @@ CREATE TABLE "job" (
     FOREIGN KEY (problem_id) REFERENCES problem(id)
 );
 
-INSERT INTO "role" (label, description) VALUES
+INSERT INTO "role" (label, description)
+VALUES
     ('Admin', 'Administrateur'),
     ('Manager', 'Manager'),
     ('Employee', 'Employé');
 
 INSERT INTO "user" (email, first_name, last_name, password, birthdate, phone_number, city_label, postal_code, street_label, street_number, points_number, experience, role_label) 
 VALUES
-    ('alice.smith@gmail.com', 'Alice', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0123456789', 'Paris', 7500, 'Rue de Rivoli', 101, 150, 0, 'Admin'),
-    ('Martin.smith@gmail.com', 'Martin', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0123456789', 'Paris', 7500, 'Rue de Rivoli', 101, 150, 0, 'Manager'),
-    ('bob.johnson@hotmail.com', 'Bob', 'Johnson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1985-12-01', '0123456780', 'Lyon', 6900, 'Avenue des Brotteaux', 205, 200,  0, 'Employee'),
-    ('claire.davis@outlook.com', 'Claire', 'Davis', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1982-06-22', '0123456790', 'Marseille', 1300, 'Boulevard de la Canebière', 150, 180,  0, 'Employee'),
-    ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1995-09-30', '0123456791', 'Toulouse', 3100, 'Rue du Taur', 58, 120,  0, 'Employee'),
-    ('emily.brown@orange.be', 'Emily', 'Brown', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1988-11-18', '0123456792', 'Bordeaux', 3300, 'Place de la Bourse', 102, 90,  500, NULL),
-    ('michael.wilson@yahoo.be', 'Michael', 'Wilson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1987-03-03', '0123456793', 'Nice', 6666, 'Avenue Jean Médecin', 89, 250,  1500, NULL),
-    ('sophie.martin@free.be', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1993-07-12', '0123456794', 'Lille', 5900, 'Rue de la République', 44, 300 ,  2500, NULL);
+    ('alice.smith@gmail.com', 'Alice', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470111111', 'Namur', 5000, 'Rue Emile Cuvelier', 1, 150, 0, 'Admin'),
+    ('Martin.smith@gmail.com', 'Martin', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470222222', 'Namur', 5000, 'Rue de Fer', 1, 150, 0, 'Manager'),
+    ('bob.johnson@hotmail.com', 'Bob', 'Johnson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1985-12-01', '0470333333', 'Namur', 5000, 'Rue Godefroid', 1, 200,  0, 'Employee'),
+    ('claire.davis@outlook.com', 'Claire', 'Davis', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1982-06-22', '0470444444', 'Namur', 5000, 'Boulevard de Bruxelles', 1, 180,  0, 'Employee'),
+    ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1995-09-30', '0470555555', 'Namur', 5000, 'Rue Rogier', 1, 120,  0, 'Employee'),
+    ('emily.brown@orange.be', 'Emily', 'Brown', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1988-11-18', '0470666666', 'Namur', 5000, 'Rue des Brasseurs', 1, 90,  500, NULL),
+    ('michael.wilson@yahoo.be', 'Michael', 'Wilson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1987-03-03', '0470777777', 'Namur', 5000, 'Avenue des Combattants', 1, 250,  1500, NULL),
+    ('sophie.martin@free.be', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1993-07-12', '0470888888', 'Namur', 5000, 'Rue Marie-Henriette', 1, 300 ,  2500, NULL);
 
-INSERT INTO "problem_type" (label, description, emergency_degree) VALUES
+INSERT INTO "problem_type" (label, description, emergency_degree)
+VALUES
     ('water_leak', 'Fuite d''eau', 1),
     ('electricity_failure', 'Panne d''électricité', 2),
     ('road_deterioration', 'Détérioration de la route', 3),
     ('garbage_dump', 'Dépôt sauvage', 4),
     ('graffiti', 'Graffiti', 5);
 
+INSERT INTO "problem" (id, description, latitude, longitude, picture, status, report_date, solved_date, problem_type_label, user_email)
+VALUES
+    (1, 'Fuite d''eau dans la rue Emile Cuvelier', 50.465, 4.867, '/uploads/reports/water_leak.jpg', 'En attente', '2024-12-10', NULL, 'water_leak', 'michael.wilson@yahoo.be'),
+    (2, 'Panne d''électricité dans la rue de Fer', 51.465, 5.867, '/uploads/reports/electricity_failure.jpg', 'En attente', '2024-11-20', NULL, 'electricity_failure', 'sophie.martin@free.be');
+
 INSERT INTO "voucher" (label, description, points_required, picture) 
 VALUES
-    ('lepetitgourmet', 'Le Petit Gourmet est un restaurant de la ville de Namur', 500, '/uploads/vouchers/grogu.jpg'),
-    ('cinemastar', 'Cinema Star est un cinema de la ville de Liège', 250, '/uploads/vouchers/grogu.jpg'),
-    ('parcdesplaisirs', 'Parc des Plaisirs est un parc de la ville de Mons', 800, '/uploads/vouchers/grogu.jpg'),
-    ('chezjuliette', 'Chez Juliette est un restaurant de la ville de Tournai', 500, '/uploads/vouchers/grogu.jpg'),
-    ('cinemalumina', 'Cinema Lumina est un cinema de la ville de Bruxelles', 250, '/uploads/vouchers/grogu.jpg');
+    ('cavo', 'Cavo est un restaurant de la ville de Namur', 1500, '/uploads/vouchers/cavo.jpg'),
+    ('cameo', 'Cameo est un cinema de la ville de Namur', 500, '/uploads/vouchers/cameo.jpg'),
+    ('walibi', 'Walibi est un parc de la ville de Wavre', 1400, '/uploads/vouchers/walibi.jpg'),
+    ('laconfluence', 'La Confluence est un restaurant de la ville de Namur', 1500, '/uploads/vouchers/la-confluence.jpg'),
+    ('acinapolis', 'Acinapolis est un cinema de la ville de Jambes', 500, '/uploads/vouchers/acinapolis.jpg');
 
 INSERT INTO "user_voucher" (code, claim_date, expiration_date, user_email, voucher_label) 
 VALUES
-    (1, '2024-12-10', '2025-12-10', 'alice.smith@gmail.com', 'lepetitgourmet'),
-    (2, '2024-11-20', '2025-11-20', 'alice.smith@gmail.com', 'cinemastar'),
-    (3, '2024-10-05', '2025-10-05', 'alice.smith@gmail.com', 'parcdesplaisirs'),
-    (4, '2024-09-15', '2025-09-15', 'alice.smith@gmail.com', 'chezjuliette'),
-    (5, '2024-08-25', '2025-08-25', 'alice.smith@gmail.com', 'cinemalumina');
+    (1, '2024-12-10', '2025-12-10', 'sophie.martin@free.be', 'cavo'),
+    (2, '2024-11-20', '2025-11-20', 'sophie.martin@free.be', 'cameo'),
+    (3, '2024-10-05', '2025-10-05', 'sophie.martin@free.be', 'walibi'),
+    (4, '2024-09-15', '2025-09-15', 'sophie.martin@free.be', 'laconfluence'),
+    (5, '2024-08-25', '2025-08-25', 'sophie.martin@free.be', 'acinapolis');  
 
-    
+INSERT INTO "job" (user_email, problem_id, job_date)
+VALUES
+    ('bob.johnson@hotmail.com', 1, '2024-12-10'),
+    ('bob.johnson@hotmail.com', 2, '2024-11-20');
