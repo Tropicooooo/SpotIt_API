@@ -12,6 +12,7 @@ import {sign} from "../util/jwt.js";
 
 
 const router = Router();
+
 router.use('/manager', managerRouter);
 router.use('/user', userRouter);
 router.use('/restaurant', restaurantRouter);
@@ -21,6 +22,59 @@ router.use("/report", reportRouter);
 router.use("/leaderboard", leaderboardRouter);
 router.use("/reportType", reportTypeRouter);
 
+/**
+ * @swagger
+ * /login:
+ *   post:
+ *     summary: User login
+ *     description: Authenticate user and return a JWT token.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 description: The user's email.
+ *                 example: "alice.smith@gmail.com"
+ *               password:
+ *                 type: string
+ *                 description: The user's password.
+ *                 example: "password123"
+ *     responses:
+ *       200:
+ *         description: Successful login.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: JWT token.
+ *                   example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+ *                 email:
+ *                   type: string
+ *                   description: The user's email.
+ *                   example: "alice.smith@gmail.com"
+ *                 status:
+ *                   type: string
+ *                   description: The user's status.
+ *                   example: "user"
+ *       401:
+ *         description: Invalid email or password.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error message.
+ *                   example: "Invalid email or password"
+ */
 router.post("/login", getUser, (req, res) => {
     console.log("index.js req.body:",req.body);
   // Assurez-vous que getUser ajoute les infos utilisateur dans req.user
