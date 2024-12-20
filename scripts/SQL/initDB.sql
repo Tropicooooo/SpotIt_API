@@ -85,7 +85,7 @@ VALUES
 INSERT INTO "user" (email, first_name, last_name, password, birthdate, phone_number, city_label, postal_code, street_label, street_number, points_number, experience, role_label) 
 VALUES
     ('alice.smith@gmail.com', 'Alice', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470111111', 'Namur', 5000, 'Rue Emile Cuvelier', 1, 150, 0, 'Admin'),
-    ('Martin.smith@gmail.com', 'Martin', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470222222', 'Namur', 5000, 'Rue de Fer', 1, 150, 0, 'Manager'),
+    ('martin.smith@gmail.com', 'Martin', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470222222', 'Namur', 5000, 'Rue de Fer', 1, 150, 0, 'Manager'),
     ('bob.johnson@hotmail.com', 'Bob', 'Johnson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1985-12-01', '0470333333', 'Namur', 5000, 'Rue Godefroid', 1, 200,  0, 'Employee'),
     ('claire.davis@outlook.com', 'Claire', 'Davis', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1982-06-22', '0470444444', 'Namur', 5000, 'Boulevard de Bruxelles', 1, 180,  0, 'Employee'),
     ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1995-09-30', '0470555555', 'Namur', 5000, 'Rue Rogier', 1, 120,  0, 'Employee'),

@@ -1,22 +1,19 @@
 import {pool} from '../database/database.js';
 import * as userModel from '../model/user.js';
-import argon2 from "argon2";
-import {verify} from "../util/jwt.js";
+import {compare} from '../util/index.js';
 
 export const getUser = async (req, res, next) => {
   const { email, password } = req.body;
-
   try {
     // Récupérer l'utilisateur via le modèle
     const user = await userModel.getUserByEmail(pool, email);
     if (!user) {
-        console.log("test1");
       return res.status(404).json({ error: "Invalid email or password" });
     }
 
-   const isPasswordValid = true;
-   console.log("isPasswordValid:",isPasswordValid);
-   
+    console.log(user.password);
+    console.log("password:",password);
+   const isPasswordValid = compare(password, user.password);
     if (!isPasswordValid) {
         console.log("test2");
       return res.status(401).json({ error: "Invalid email or password" });
@@ -24,11 +21,9 @@ export const getUser = async (req, res, next) => {
 
     // Ajouter les infos utilisateur à req pour le prochain middleware
     req.user = {
-      email: user.email,
-      status: user.role,
+      email: user?.email,
+      status: user?.role,
     };
-    console.log("controler:",req.user);
-
     next(); // Passe au middleware suivant (génération du token)
   } catch (err) {
     console.error("Error in getUser:", err);

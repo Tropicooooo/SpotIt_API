@@ -22,9 +22,7 @@ router.use("/leaderboard", leaderboardRouter);
 router.use("/reportType", reportTypeRouter);
 
 router.post("/login", getUser, (req, res) => {
-    console.log("index.js req.body:",req.body);
   // Assurez-vous que getUser ajoute les infos utilisateur dans req.user
-
   if (!req?.user) {
     console.log("routes:", req?.body);
     return res.status(401).json({ error: "Invalid email or password" });
@@ -35,7 +33,7 @@ router.post("/login", getUser, (req, res) => {
   let token;
     // Générer un token avec les informations utilisateur
   if(status){
-    token = sign( {status})
+    token = sign( {status, email});
   }else{
     token = sign( {status : "User", email});
   }
