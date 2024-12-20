@@ -152,6 +152,7 @@ export const getUserVoucher = async (req, res) => {
 };
 
 export const deleteUserVoucher = async (req, res) => {
+    console.log(req.query);
     try {
         await userVoucherModel.deleteUserVoucher(pool, req.query);  //OK
         return res.sendStatus(204);

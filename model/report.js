@@ -241,6 +241,29 @@ export const updateReport = async (
 
     await SQLClient.query(query, values);
 
+    // Mise à jour de l'utilisateur si le statut est "Résolu"
+    if (status === 'Résolu') {
+      // Récupérer l'email de l'utilisateur lié au problème
+      const userQuery = `
+        SELECT user_email 
+        FROM Problem 
+        WHERE ID = $1
+      `;
+      const userResult = await SQLClient.query(userQuery, [id]);
+
+      if (userResult.rows.length > 0) {
+        const userEmail = userResult.rows[0].user_email;
+        
+        // Mise à jour de l'utilisateur avec 20 points et 10 d'expérience
+        const updateUserQuery = `
+          UPDATE "user" 
+          SET points_number = points_number + 20, experience = experience + 10 
+          WHERE email = $1
+        `;
+        await SQLClient.query(updateUserQuery, [userEmail]);
+      }
+    }
+
     // Gestion de la table Job si responsable est défini
     if (responsable && responsable !== 'null') {
       const checkQuery = `SELECT User_Email FROM Job WHERE Problem_ID = $1`;
@@ -273,6 +296,7 @@ export const updateReport = async (
     return { success: false, error };
   }
 };
+
 
 export const deleteReport = async (SQLClient, { id }) => {
   try {
