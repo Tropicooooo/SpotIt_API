@@ -34,15 +34,15 @@ router.post("/login", getUser, (req, res) => {
   console.log("index req.user:", req?.user);
   let token;
     // Générer un token avec les informations utilisateur
-  if(status){
-    token = sign( {status})
-  }else{
-    token = sign( {status : "User", email});
-  }
+    if(status){
+      token = sign( {status, email});
+    }else{
+      token = sign( {status : "User", email});
+    }
 
     // Renvoyer le token au client
     console.log("index.js token:",token);
-  res.json({token});
+  res.json({token, email, status});
 });
 
 export default router;
