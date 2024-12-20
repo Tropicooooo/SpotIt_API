@@ -84,14 +84,14 @@ VALUES
 
 INSERT INTO "user" (email, first_name, last_name, password, birthdate, phone_number, city_label, postal_code, street_label, street_number, points_number, experience, role_label) 
 VALUES
-    ('alice.smith@gmail.com', 'Alice', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470111111', 'Namur', 5000, 'Rue Emile Cuvelier', 1, 150, 0, 'Admin'),
-    ('martin.smith@gmail.com', 'Martin', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470222222', 'Namur', 5000, 'Rue de Fer', 1, 150, 0, 'Manager'),
-    ('bob.johnson@hotmail.com', 'Bob', 'Johnson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1985-12-01', '0470333333', 'Namur', 5000, 'Rue Godefroid', 1, 200,  0, 'Employee'),
-    ('claire.davis@outlook.com', 'Claire', 'Davis', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1982-06-22', '0470444444', 'Namur', 5000, 'Boulevard de Bruxelles', 1, 180,  0, 'Employee'),
-    ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1995-09-30', '0470555555', 'Namur', 5000, 'Rue Rogier', 1, 120,  0, 'Employee'),
-    ('emily.brown@orange.be', 'Emily', 'Brown', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1988-11-18', '0470666666', 'Namur', 5000, 'Rue des Brasseurs', 1, 90,  500, NULL),
-    ('michael.wilson@yahoo.be', 'Michael', 'Wilson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1987-03-03', '0470777777', 'Namur', 5000, 'Avenue des Combattants', 1, 250,  1500, NULL),
-    ('sophie.martin@free.be', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1993-07-12', '0470888888', 'Namur', 5000, 'Rue Marie-Henriette', 1, 300 ,  2500, NULL);
+    ('alice.smith@gmail.com', 'Alice', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470111111', 'Namur', 5000, 'Rue Emile Cuvelier', 1, 0, 0, 'Admin'),
+    ('martin.smith@gmail.com', 'Martin', 'Smith', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1990-04-15', '0470222222', 'Namur', 5000, 'Rue de Fer', 1, 0, 0, 'Manager'),
+    ('bob.johnson@hotmail.com', 'Bob', 'Johnson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1985-12-01', '0470333333', 'Namur', 5000, 'Rue Godefroid', 1, 0,  0, 'Employee'),
+    ('claire.davis@outlook.com', 'Claire', 'Davis', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1982-06-22', '0470444444', 'Namur', 5000, 'Boulevard de Bruxelles', 1, 0, 0, 'Employee'),
+    ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1995-09-30', '0470555555', 'Namur', 5000, 'Rue Rogier', 1, 0, 0, 'Employee'),
+    ('emily.brown@orange.be', 'Emily', 'Brown', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1988-11-18', '0470666666', 'Namur', 5000, 'Rue des Brasseurs', 1, 200, 100, NULL),
+    ('michael.wilson@yahoo.be', 'Michael', 'Wilson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1987-03-03', '0470777777', 'Namur', 5000, 'Avenue des Combattants', 1, 220,  110, NULL),
+    ('sophie.martin@free.be', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1993-07-12', '0470888888', 'Namur', 5000, 'Rue Marie-Henriette', 1, 260 , 130, NULL);
 
 INSERT INTO "problem_type" (label, description, emergency_degree)
 VALUES
@@ -108,10 +108,10 @@ VALUES
 
 INSERT INTO "voucher" (label, description, points_required, picture) 
 VALUES
-    ('cavo', 'Cavo est un restaurant de la ville de Namur', 1500, '/uploads/vouchers/cavo.jpg'),
+    ('cavo', 'Cavo est un restaurant de la ville de Namur', 1000, '/uploads/vouchers/cavo.jpg'),
     ('cameo', 'Cameo est un cinema de la ville de Namur', 500, '/uploads/vouchers/cameo.jpg'),
-    ('walibi', 'Walibi est un parc de la ville de Wavre', 1400, '/uploads/vouchers/walibi.jpg'),
-    ('laconfluence', 'La Confluence est un restaurant de la ville de Namur', 1500, '/uploads/vouchers/la-confluence.jpg'),
+    ('walibi', 'Walibi est un parc de la ville de Wavre', 800, '/uploads/vouchers/walibi.jpg'),
+    ('laconfluence', 'La Confluence est un restaurant de la ville de Namur', 1000, '/uploads/vouchers/la-confluence.jpg'),
     ('acinapolis', 'Acinapolis est un cinema de la ville de Jambes', 500, '/uploads/vouchers/acinapolis.jpg');
 
 INSERT INTO "user_voucher" (code, claim_date, expiration_date, user_email, voucher_label) 
