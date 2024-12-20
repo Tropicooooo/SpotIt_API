@@ -1,0 +1,759 @@
+{
+	"info": {
+		"_postman_id": "b689ce06-d113-450d-ad0a-42f74097a4ff",
+		"name": "Spotit API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "40573246"
+	},
+	"item": [
+		{
+			"name": "Report Types",
+			"item": [
+				{
+					"name": "reportType",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    const contentType = pm.response.headers.get(\"Content-Type\");\r",
+									"    pm.expect(contentType).to.include(\"application/json\"); // Vérifie que 'Content-Type' contient 'application/json'\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains an array with correct objects\", function () {\r",
+									"    const response = pm.response.json();\r",
+									"    \r",
+									"    pm.expect(response).to.be.an('array').that.is.not.empty; // Vérifie que la réponse est un tableau et qu'il n'est pas vide\r",
+									"\r",
+									"    // Vérifie que chaque objet dans le tableau contient les clés 'label', 'description', et 'emergency_degree'\r",
+									"    response.forEach(item => {\r",
+									"        pm.expect(item).to.have.all.keys('label', 'description', 'emergency_degree');\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/manager/reporttype",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"reporttype"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "getUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Vérifie si le code de statut est bien 200\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// Vérifie que la réponse est en JSON\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"// Vérifie que la réponse est un tableau et qu'il n'est pas vide\r",
+									"pm.test(\"Response is an array and is not empty\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.be.an('array').that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"// Vérifie que chaque objet dans le tableau a les bonnes propriétés (email, firstname, lastname)\r",
+									"pm.test(\"Each user has 'email', 'firstname' and 'lastname'\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    jsonData.forEach(function(user) {\r",
+									"        pm.expect(user).to.have.property(\"email\");\r",
+									"        pm.expect(user).to.have.property(\"firstname\");\r",
+									"        pm.expect(user).to.have.property(\"lastname\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/manager/userslist",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"userslist"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect([200, 204]).to.include(pm.response.code);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"spotit@spotit.com\",\r\n    \"firstname\": \"Alice\",\r\n    \"lastname\": \"Smith\",\r\n    \"password\": \"newPassword123\", \r\n    \"birthdate\": \"1990-01-01\", \r\n    \"phone\": \"1234567890\",  // Numéro de téléphone de 10 chiffres\r\n    \"cityLabel\": \"Paris\", \r\n    \"postalCode\": \"9999\",  // Code postal ne dépassant pas 9999\r\n    \"streetLabel\": \"rue du saint\", \r\n    \"streetNumber\": \"1\", \r\n    \"pointsNumber\": 120, \r\n    \"experience\": 5\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/manager/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect([200, 204]).to.include(pm.response.code);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"martin.smith@gmail.com\",\r\n    \"firstname\": \"Alice\",\r\n    \"lastname\": \"Smith\",\r\n    \"password\": \"newPassword123\", \r\n    \"birthdate\": \"1990-01-01\", \r\n    \"phone\": \"1234567890\",  // Numéro de téléphone de 10 chiffres\r\n    \"cityLabel\": \"Paris\", \r\n    \"postalCode\": \"9999\",  // Code postal ne dépassant pas 9999\r\n    \"streetLabel\": \"rue du saint\", \r\n    \"streetNumber\": \"1\", \r\n    \"pointsNumber\": 120, \r\n    \"experience\": 5,\r\n    \"role\": \"Admin\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/manager/user",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"user"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect([200, 204]).to.include(pm.response.code);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3001/manager/user?email={{email}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"user"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "{{email}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vouchers",
+			"item": [
+				{
+					"name": "user-vouchers",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains 'userVouchers' and is not empty\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('userVouchers').that.is.an('array').that.is.not.empty;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains 5 vouchers\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.userVouchers.length).to.eql(5);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each voucher has the correct properties\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    jsonData.userVouchers.forEach(function(voucher) {\r",
+									"        pm.expect(voucher).to.have.property('code');\r",
+									"        pm.expect(voucher).to.have.property('claimDate');\r",
+									"        pm.expect(voucher).to.have.property('expirationDate');\r",
+									"        pm.expect(voucher).to.have.property('userEmail');\r",
+									"        pm.expect(voucher).to.have.property('voucherLabel');\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Dates are in valid ISO format\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    jsonData.userVouchers.forEach(function(voucher) {\r",
+									"        pm.expect(voucher.claimDate).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$/);\r",
+									"        pm.expect(voucher.expirationDate).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$/);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Total vouchers is 5\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.total).to.eql(\"5\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/manager/user-vouchers",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"user-vouchers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response is JSON\", function () {\r",
+									"    pm.response.to.be.json;\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains the correct properties\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData).to.have.property('code');\r",
+									"    pm.expect(jsonData).to.have.property('claimDate');\r",
+									"    pm.expect(jsonData).to.have.property('expirationDate');\r",
+									"    pm.expect(jsonData).to.have.property('userEmail');\r",
+									"    pm.expect(jsonData).to.have.property('voucherLabel');\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Dates are in valid ISO format\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.claimDate).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$/);\r",
+									"    pm.expect(jsonData.expirationDate).to.match(/^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{3}Z$/);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Code is a string\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.code).to.be.a('string');\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/manager/user-voucher?code=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"user-voucher"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete user-voucher",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect([200, 204]).to.include(pm.response.code);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/manager/user-voucher?code=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"user-voucher"
+							],
+							"query": [
+								{
+									"key": "code",
+									"value": "1"
+								},
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Reports",
+			"item": [
+				{
+					"name": "getAllReports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response contains 'reports'\", function () {\r",
+									"    pm.response.to.have.jsonBody(\"reports\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Each report is an object with expected properties\", function () {\r",
+									"    let reports = pm.response.json().reports;\r",
+									"    reports.forEach(report => {\r",
+									"        pm.expect(report).to.have.all.keys(\r",
+									"            \"id\", \"report_date\", \"status\", \"address\", \"latitude\", \"longitude\",\r",
+									"            \"problemtypelabel\", \"userEmail\", \"responsable\", \"picture\", \"description\", \"solved_date\", \"geocodedaddress\"\r",
+									"        );\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check that report_date is in correct format\", function () {\r",
+									"    let reports = pm.response.json().reports;\r",
+									"    reports.forEach(report => {\r",
+									"        pm.expect(report.report_date).to.match(/^\\d{4}-\\d{2}-\\d{2}$/);\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check that address, latitude, and longitude are valid\", function () {\r",
+									"    let reports = pm.response.json().reports;\r",
+									"    reports.forEach(report => {\r",
+									"        pm.expect(report.address).to.be.a(\"string\").that.is.not.empty;\r",
+									"        pm.expect(report.latitude).to.be.a(\"number\");\r",
+									"        pm.expect(report.longitude).to.be.a(\"number\");\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check that 'total' is a number\", function () {\r",
+									"    pm.expect(pm.response.json().total).to.be.a(\"string\").that.match(/^\\d+$/);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check that the first report has the expected values\", function () {\r",
+									"    let report = pm.response.json().reports[0];\r",
+									"    pm.expect(report.problemtypelabel).to.equal(\"water_leak\");\r",
+									"    pm.expect(report.userEmail).to.equal(\"michael.wilson@yahoo.be\");\r",
+									"    pm.expect(report.description).to.include(\"Fuite d'eau dans la rue Emile Cuvelier\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check that solved_date is null when the report is not solved\", function () {\r",
+									"    let reports = pm.response.json().reports;\r",
+									"    reports.forEach(report => {\r",
+									"        if (!report.solved_date) {\r",
+									"            pm.expect(report.solved_date).to.be.null;\r",
+									"        }\r",
+									"    });\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check that the report status is 'En attente'\", function () {\r",
+									"    let reports = pm.response.json().reports;\r",
+									"    reports.forEach(report => {\r",
+									"        pm.expect(report.status).to.equal(\"En attente\");\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/manager/all-reports",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"all-reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteReport",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200 or 204\", function () {\r",
+									"    pm.expect([200, 204]).to.include(pm.response.code);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/manager/all-reports?id=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"all-reports"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "updateReport",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{jwt}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3001/manager/all-report",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3001",
+							"path": [
+								"manager",
+								"all-report"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "jwt",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJBZG1pbiIsImVtYWlsIjoiYWxpY2Uuc21pdGhAZ21haWwuY29tIiwiaWF0IjoxNzM0NzEwOTU2fQ.0BsykWWOknNOn0DV2mvNFzqQ0Fbx8SAIaeq62I8U_T8",
+			"type": "string"
+		},
+		{
+			"key": "email",
+			"value": "alice.smith@gmail.com",
+			"type": "string"
+		}
+	]
+}
