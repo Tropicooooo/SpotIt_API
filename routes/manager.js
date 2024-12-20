@@ -16,7 +16,7 @@ const voucherUpload = configureUpload(vouchersFolder);
 
 const REPORTS_FOLDER = path.join(new URL(import.meta.url).pathname, '../../uploads/reports');
 const reportUpload = configureUpload(REPORTS_FOLDER);
-//Admin TOUT    USER RIEN       MANAGER EMPLOYEE TOUT SIGNALEMENTS RECOMPENSES    EMPLOYEE SIGNALEMENTS
+
 // Routes pour les utilisateurs
 router.get('/users', checkJWT , manager,  getUsers);
 router.get('/user', checkJWT , manager,  getUser)
@@ -24,22 +24,22 @@ router.delete('/user', checkJWT , manager,  deleteUser);
 router.patch('/userWithoutPassword', checkJWT , manager, MPV.updateWithoutPassword, updateUser);
 router.patch('/user', MPV.user,  checkJWT , manager, updateUser);
 router.post('/user', MPV.user,  checkJWT , manager, createUser);
-router.get('/userslist', getUsersName);
+router.get('/userslist',checkJWT , manager, getUsersName);
 // Routes pour les vouchers
-router.get('/vouchers', getVouchers);
-router.get('/voucher', getVoucher);
+router.get('/vouchers',checkJWT , admin, getVouchers);
+router.get('/voucher',checkJWT , admin, getVoucher);
 //router.post('/voucher', voucherUpload.single('picture'), MPV.voucher, createVoucher);
-router.post('/voucher', voucherUpload.single('picture'), createVoucher);
-router.delete('/voucher', deleteVoucher);
-router.patch('/voucher', voucherUpload.single('picture'), updateVoucher);
+router.post('/voucher',checkJWT , admin, voucherUpload.single('picture'), createVoucher);
+router.delete('/voucher',checkJWT , admin, deleteVoucher);
+router.patch('/voucher',checkJWT , admin, voucherUpload.single('picture'), updateVoucher);
 //router.patch('/voucher', voucherUpload.single('picture'), MPV.voucher, updateVoucher);
 
 // Routes pour les vouchers réclamés
-router.get('/user-vouchers', getUserVouchers);
-router.get('/user-voucher', getUserVoucher);
-router.post('/user-voucher', MPV.userVoucher, createUserVoucher);
-router.delete('/user-voucher', deleteUserVoucher);
-router.patch('/user-voucher', MPV.userVoucher, updateUserVoucher);
+router.get('/user-vouchers', checkJWT , admin, getUserVouchers);
+router.get('/user-voucher', checkJWT , admin, getUserVoucher);
+router.post('/user-voucher', checkJWT , admin, MPV.userVoucher, createUserVoucher);
+router.delete('/user-voucher', checkJWT , admin, deleteUserVoucher);
+router.patch('/user-voucher', checkJWT , admin, MPV.userVoucher, updateUserVoucher);
 
 router.get('/employees', checkJWT , manager, getEmployees);
 router.get('/employee', checkJWT , manager,  getEmployee);
