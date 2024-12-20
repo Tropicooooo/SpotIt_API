@@ -91,7 +91,7 @@ VALUES
     ('john.miller@gmail.com', 'John', 'Miller', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1995-09-30', '0470555555', 'Namur', 5000, 'Rue Rogier', 1, 0, 0, 'Employee'),
     ('emily.brown@orange.be', 'Emily', 'Brown', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1988-11-18', '0470666666', 'Namur', 5000, 'Rue des Brasseurs', 1, 200, 100, NULL),
     ('michael.wilson@yahoo.be', 'Michael', 'Wilson', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1987-03-03', '0470777777', 'Namur', 5000, 'Avenue des Combattants', 1, 220,  110, NULL),
-    ('sophie.martin@free.be', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1993-07-12', '0470888888', 'Namur', 5000, 'Rue Marie-Henriette', 1, 260 , 130, NULL);
+    ('sophie.martin@free.be', 'Sophie', 'Martin', '$argon2id$v=19$m=65536,t=3,p=4$/6bIVl3vXsAw4PhoykaRug$kXcPi1lpiNHtdDHSXqGA5P3JWypI3VlN5FluRkfcHhE', '1993-07-12', '0470888888', 'Namur', 5000, 'Rue Marie-Henriette', 1, 260 , 3930, NULL);
 
 INSERT INTO "problem_type" (label, description, emergency_degree)
 VALUES
