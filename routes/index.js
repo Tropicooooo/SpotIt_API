@@ -7,6 +7,8 @@ import {default as amusementParkRouter} from './amusementPark.js';
 import {default as reportRouter} from "./report.js";
 import {default as leaderboardRouter} from "./leaderboard.js";
 import {default as reportTypeRouter} from "./reportType.js";
+import { getUser } from '../controler/user.js';
+import jwt from "jsonwebtoken";
 
 const router = Router();
 //manager eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJtYW5hZ2VyIn0.Qz0fmEFxEX0BODyxTmIq1G9utZHQClt6VeuLm3OvEGo
@@ -19,6 +21,29 @@ router.use('/cinema', cinemaRouter);
 router.use('/amusement-park', amusementParkRouter);
 router.use("/report", reportRouter);
 router.use("/leaderboard", leaderboardRouter);
-router.use("/reportType", reportTypeRouter)
+router.use("/reportType", reportTypeRouter);
 
-export default router
+const JWT_SECRET = process.env.JWT_SECRET;
+
+router.post("/login", getUser, (req, res) => {
+    console.log("index.js req.body:",req.body);
+  // Assurez-vous que getUser ajoute les infos utilisateur dans req.user
+
+  if (!req.user) {
+    console.log("routes:", req.body);
+    return res.status(401).json({ error: "Invalid email or password" });
+  }
+
+  const { email, role } = req.user;
+  console.log("index req.user:", req.user);
+  // Générer un token avec les informations utilisateur
+  const token = jwt.sign( {email,role,},JWT_SECRET,{ expiresIn: "1h" } // Durée de validité du token
+  );
+
+    // Renvoyer le token au client
+    console.log("index.js token:",token);
+
+  res.json({ token, email });
+});
+
+export default router;

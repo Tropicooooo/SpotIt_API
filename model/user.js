@@ -113,3 +113,12 @@ export const getUsersName = async (SQLClient) => {
         return [];
     }
 };
+
+export const getUserByEmail = async (SQLClient, email) => {
+    const { rows } = await SQLClient.query(
+      'SELECT email, password, role_label FROM "user" WHERE email = $1',
+      [email]
+    );
+    console.log(rows);
+    return rows[0]; // Retourne l'utilisateur ou undefined
+  };
