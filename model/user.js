@@ -116,7 +116,7 @@ export const getUsersName = async (SQLClient) => {
 
 export const getUserByEmail = async (SQLClient, email) => {
     const { rows } = await SQLClient.query(
-      'SELECT email, password, role_label FROM "user" WHERE email = $1',
+      'SELECT email  AS "email", password  AS "password", role_label as "role" FROM "user" WHERE email = $1',
       [email]
     );
     console.log(rows);

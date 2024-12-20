@@ -1,5 +1,5 @@
 export const manager = (req, res, next) => {   
-    if(req?.session?.status === 'admin' || req?.session?.status === 'manager'){
+    if(req?.session?.status === 'Admin' || req?.session?.status === 'Manager'){
         next();
     } else {
         res.sendStatus(403);
@@ -7,7 +7,7 @@ export const manager = (req, res, next) => {
 }
 
 export const user = (req, res, next) => {   
-    if(req?.session?.status === 'user'){
+    if(req?.session?.status === 'User'){
         next();
     } else {
         res.sendStatus(403);
@@ -15,7 +15,7 @@ export const user = (req, res, next) => {
 }
 
 export const employee = (req, res, next) => {   
-    if(req?.session?.status === 'admin' || req?.session?.status === 'employee' || req?.session?.status === 'manager'){
+    if(req?.session?.status === 'Admin' || req?.session?.status === 'Employee' || req?.session?.status === 'Manager'){
         next();
     } else {
         res.sendStatus(403);
@@ -23,7 +23,7 @@ export const employee = (req, res, next) => {
 }
 
 export const admin = (req, res, next) => {   
-    if(req?.session?.status === 'admin'){
+    if(req?.session?.status === 'Admin'){
         next();
     } else {
         res.sendStatus(403);

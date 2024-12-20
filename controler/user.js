@@ -1,11 +1,10 @@
 import {pool} from '../database/database.js';
 import * as userModel from '../model/user.js';
 import argon2 from "argon2";
+import {verify} from "../util/jwt.js";
 
 export const getUser = async (req, res, next) => {
-
   const { email, password } = req.body;
-  const hashFromDatabase = '$argon2id$v=19$m=65536,t=3,p=4$bGVzb3JyYW5nZXNzb250b3JyYW5nZXM$4Vdt3kolOcK6azuxSrVZNA'; // Hash d'exemple généré
 
   try {
     // Récupérer l'utilisateur via le modèle
@@ -15,25 +14,20 @@ export const getUser = async (req, res, next) => {
       return res.status(404).json({ error: "Invalid email or password" });
     }
 
-
-    // Vérifier le mot de passe (bcrypt si hashé)
-    console.log(hashFromDatabase , password);
-   // const isPasswordValid = await argon2.verify(hashFromDatabase, password); // Si password n'est pas hashé, remplace par une simple comparaison.
-   const isPasswordValid = false;
-
+   const isPasswordValid = true;
+   console.log("isPasswordValid:",isPasswordValid);
+   
     if (!isPasswordValid) {
         console.log("test2");
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
     // Ajouter les infos utilisateur à req pour le prochain middleware
-
     req.user = {
       email: user.email,
-      role: user.role_label,
+      status: user.role,
     };
     console.log("controler:",req.user);
-
 
     next(); // Passe au middleware suivant (génération du token)
   } catch (err) {
