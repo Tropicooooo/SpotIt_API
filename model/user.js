@@ -18,9 +18,28 @@ export const getTotalUsers = async (SQLClient) => {
     return total;
 };
 
-export const deleteUser = async (SQLClient, {email}) => {
-    return await SQLClient.query('DELETE FROM "user" WHERE email = $1', [email]);
-}
+export const deleteUser = async (SQLClient, { email }) => {
+    try {
+      // Commencer une transaction pour garantir l'intégrité des données
+      await SQLClient.query('BEGIN');
+  
+      // Supprimer les entrées associées dans la table "job"
+      await SQLClient.query('DELETE FROM "job" WHERE user_email = $1', [email]);
+  
+      // Supprimer l'utilisateur dans la table "user"
+      const result = await SQLClient.query('DELETE FROM "user" WHERE email = $1', [email]);
+  
+      // Valider la transaction
+      await SQLClient.query('COMMIT');
+  
+      return result;
+    } catch (error) {
+      // Annuler la transaction en cas d'erreur
+      await SQLClient.query('ROLLBACK');
+      throw error;
+    }
+  };
+  
 
 export const createUser = async (SQLClient, {email, firstname, lastname, password, birthdate, phone, cityLabel, postalCode, streetLabel, streetNumber, pointsNumber }) => {
        return await SQLClient.query('INSERT INTO "user" (email, first_name, last_name, password, birthdate, phone_number, city_label, postal_code, street_label, street_number, points_number) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)',[email, firstname, lastname, await hash(password), birthdate, phone, cityLabel, postalCode, streetLabel, streetNumber, pointsNumber]);
