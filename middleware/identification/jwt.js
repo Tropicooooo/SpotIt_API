@@ -4,6 +4,7 @@ export const checkJWT = async (req, res, next) => {
     const authorize = req.get('authorization');
     if(authorize?.includes('Bearer')){
         const jwtEncoded = authorize?.split(' ')[1];
+        console.log(jwtEncoded);
         try {
             req.session = verify(jwtEncoded);
             next();
