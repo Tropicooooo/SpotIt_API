@@ -103,8 +103,8 @@ VALUES
 
 INSERT INTO "problem" (id, description, latitude, longitude, picture, status, report_date, solved_date, problem_type_label, user_email)
 VALUES
-    (1, 'Fuite d''eau dans la rue Emile Cuvelier', 50.465, 4.867, '/uploads/reports/water_leak.jpg', 'En attente', '2024-12-10', NULL, 'water_leak', 'michael.wilson@yahoo.be'),
-    (2, 'Panne d''électricité dans la rue de Fer', 51.465, 5.867, '/uploads/reports/electricity_failure.jpg', 'En attente', '2024-11-20', NULL, 'electricity_failure', 'sophie.martin@free.be');
+    (1, 'Fuite d''eau dans la rue Emile Cuvelier', 50.464508056640625, 4.866512775421143, '/uploads/reports/water_leak.jpg', 'En attente', '2024-12-10', NULL, 'water_leak', 'michael.wilson@yahoo.be'),
+    (2, 'Panne d''électricité dans la rue de Fer', 50.4655684, 4.8651746, '/uploads/reports/electricity_failure.jpg', 'En attente', '2024-11-20', NULL, 'electricity_failure', 'sophie.martin@free.be');
 
 INSERT INTO "voucher" (label, description, points_required, picture) 
 VALUES
