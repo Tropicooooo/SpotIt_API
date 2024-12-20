@@ -90,7 +90,7 @@ export const deleteEmployee = async (SQLClient, { email }) => {
 };
 
 
-export const updateEmployee = async (SQLClient, { email, firstname, lastname, phone, cityLabel, postalCode, streetLabel, streetNumber, role }) => {
+export const updateEmployee = async (SQLClient, { email, firstname, lastname, phone_number, cityLabel, postalCode, streetLabel, streetNumber }) => {
     try {
         await SQLClient.query(`
             UPDATE "user" 
@@ -101,10 +101,9 @@ export const updateEmployee = async (SQLClient, { email, firstname, lastname, ph
                 city_label = $4, 
                 postal_code = $5, 
                 street_label = $6, 
-                street_number = $7, 
-                role_label = $8 
-            WHERE email = $9;
-        `, [firstname, lastname, phone, cityLabel, postalCode, streetLabel, streetNumber, role, email]);
+                street_number = $7
+            WHERE email = $8;
+        `, [firstname, lastname, phone_number, cityLabel, postalCode, streetLabel, streetNumber, email]);
 
         console.log(`Employee with email ${email} has been successfully updated.`);
     } catch (err) {
