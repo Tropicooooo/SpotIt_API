@@ -78,12 +78,10 @@ router.use("/reportType", reportTypeRouter);
 router.post("/login", getUser, (req, res) => {
   // Assurez-vous que getUser ajoute les infos utilisateur dans req.user
   if (!req?.user) {
-    console.log("routes:", req?.body);
     return res.status(401).json({ error: "Invalid email or password" });
   }
   
   const { email, status} = req?.user;
-  console.log("index req.user:", req?.user);
   let token;
     // Générer un token avec les informations utilisateur
     if(status){
@@ -93,7 +91,6 @@ router.post("/login", getUser, (req, res) => {
     }
 
     // Renvoyer le token au client
-    console.log("index.js token:",token);
   res.json({token, email, status});
 });
 

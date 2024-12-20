@@ -138,6 +138,5 @@ export const getUserByEmail = async (SQLClient, email) => {
       'SELECT email  AS "email", password  AS "password", role_label as "role" FROM "user" WHERE email = $1',
       [email]
     );
-    console.log(rows);
     return rows[0]; // Retourne l'utilisateur ou undefined
   };

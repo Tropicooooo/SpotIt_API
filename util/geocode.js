@@ -18,7 +18,6 @@ export async function reverseGeocode(latitude, longitude) {
 export async function geocodeAddress(address) {
     try {
       const url = `https://nominatim.openstreetmap.org/search?format=jsonv2&q=${encodeURIComponent(address)}`;
-      console.log(url);
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);

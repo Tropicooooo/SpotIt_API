@@ -116,7 +116,6 @@ export const addReport = async (
     await SQLClient.query('BEGIN');
 
     const adresse = await geocodeAddress(geocodedaddress);
-    console.log('Adresse inversée:', adresse);
     // Insérer le rapport dans la table Problem
     const insertProblemQuery = `
       INSERT INTO Problem (Description, Latitude, Longitude, Problem_Type_Label, Status, Report_Date, Picture, User_Email) 
@@ -141,7 +140,7 @@ export const addReport = async (
 
     // Confirmer la transaction
     await SQLClient.query('COMMIT');
-    console.log('Report added successfully');
+
     return { success: true };
   } catch (error) {
     // Annuler la transaction en cas d'erreur
@@ -208,12 +207,10 @@ export const updateReport = async (
   SQLClient,
   { id, report_date, solved_date, responsable, status, geocodedaddress, description, problemtypelabel }
 ) => {
-  console.log('updateReport', { id, report_date, solved_date, responsable, status, geocodedaddress, description, problemtypelabel });
   try {
     await SQLClient.query('BEGIN');
 
     const adresse = await geocodeAddress(geocodedaddress);
-    console.log('Adresse inversée:', adresse);
 
     // Gestion du status et de solved_date
     if (status === 'Résolu' && (!solved_date || solved_date === null)) {
@@ -288,7 +285,6 @@ export const updateReport = async (
     }
 
     await SQLClient.query('COMMIT');
-    console.log('Update successful');
     return { success: true };
   } catch (error) {
     await SQLClient.query('ROLLBACK');
@@ -306,7 +302,6 @@ export const deleteReport = async (SQLClient, { id }) => {
 
     // Supprimer d'abord les enregistrements dans la table "job"
     await SQLClient.query('DELETE FROM job WHERE problem_id = $1', [id]);
-    console.log(`Deleted all jobs associated with problem_id: ${id}`);
 
     // Requête pour obtenir le chemin de l'image depuis la base de données
     const result = await SQLClient.query('SELECT picture FROM Problem WHERE ID = $1', [id]);
@@ -326,15 +321,12 @@ export const deleteReport = async (SQLClient, { id }) => {
           } else {
             console.error(`Failed to delete file: ${err.message}`);
           }
-        } else {
-          console.log(`File deleted successfully at ${fullPath}`);
         }
       });
     }
 
     // Supprimer l'entrée dans la table "Problem"
     await SQLClient.query('DELETE FROM Problem WHERE ID = $1', [id]);
-    console.log(`Deleted problem with ID: ${id}`);
   } catch (error) {
     console.error('Database query or file deletion error:', error);
   }

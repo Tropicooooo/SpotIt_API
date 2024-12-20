@@ -15,9 +15,7 @@ export const getAllReportType = async (SQLClient) => {
 
 export const createReportType = async (SQLClient, { label, description,  emergency_degree}) => {
     try {
-        console.log(label, description, emergency_degree);
         await SQLClient.query(`INSERT INTO problem_type(label, description, emergency_degree) VALUES ($1, $2, $3);`, [label, description, emergency_degree]);
-        console.log('Report type has been successfully created.');
     } catch (err) {
         console.error('Failed to create report type', err);
     }
@@ -44,7 +42,6 @@ export const updateReportType = async (SQLClient, { label, description, emergenc
 
         await SQLClient.query(query, values);
 
-        console.log(`Report type with label "${label}" has been successfully updated to "${labelUpdate || label}".`);
     } catch (err) {
         console.error('Failed to update report type', err);
     }

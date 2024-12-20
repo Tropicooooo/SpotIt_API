@@ -98,7 +98,6 @@ export const deleteVoucher = async (req, res) => {
 
 export const updateVoucher = async (req, res) => {
     try {
-        console.log(req.body);
         await voucherModel.updateVoucher(pool, req.body, req.body?.labelUpdate);  //OK
         return res.sendStatus(204);
     } catch (err) {
@@ -152,7 +151,6 @@ export const getUserVoucher = async (req, res) => {
 };
 
 export const deleteUserVoucher = async (req, res) => {
-    console.log(req.query);
     try {
         await userVoucherModel.deleteUserVoucher(pool, req.query);  //OK
         return res.sendStatus(204);
@@ -249,7 +247,6 @@ export const getAllReport = async (req, res) => {
 }
 export const updateReport = async (req, res) => {
      try {
-        console.log("controler", req.body);
         await reportModel.updateReport(pool, req.body);
         return res.sendStatus(204);
     } catch (err) {
@@ -259,7 +256,6 @@ export const updateReport = async (req, res) => {
 
 export const createReport = async (req, res) => {
     try {
-        console.log("create report", req.body);
         const {status, report_date, userEmail, solved_date, description, problemtypelabel, responsable,geocodedaddress} = req.body;
 
         const picture = req.file ? `/uploads/reports/${req.file.filename}` : null;
@@ -296,7 +292,6 @@ export const getJobs = async (req, res) => {
 
 export const getJob = async (req, res) => {
     try {
-        console.log(req);
         const job = await jobModel.getJob(pool, req.query);
         if (!job) {
             return res.sendStatus(404);
@@ -318,7 +313,6 @@ export const updateJob = async (req, res) => {
 };
 
 export const deleteReport = async (req, res) => {
-    console.log(req.query);
 
     try {
         await reportModel.deleteReport(pool, req.query);

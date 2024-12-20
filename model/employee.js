@@ -83,7 +83,6 @@ export const deleteEmployee = async (SQLClient, { email }) => {
             WHERE email = $1;
         `, [email]);
 
-        console.log(`Employee with email ${email} has been successfully updated.`);
     } catch (err) {
         console.error('Failed to delete employee', err);
     }
@@ -105,7 +104,6 @@ export const updateEmployee = async (SQLClient, { email, firstname, lastname, ph
             WHERE email = $8;
         `, [firstname, lastname, phone_number, cityLabel, postalCode, streetLabel, streetNumber, email]);
 
-        console.log(`Employee with email ${email} has been successfully updated.`);
     } catch (err) {
         console.error('Failed to update employee', err);
     }

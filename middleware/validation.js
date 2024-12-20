@@ -76,9 +76,7 @@ export const managerValidatorMiddleware = {
 
     report : async (req, res, next) => {
         try {
-            console.log("validation req.body",req.body);
             req.val = await ReportValidator.report.validate(req.body);
-            console.log("validation req.valy",req.val);
             next();
         } catch (e) {
             res.status(400).send(e.messages);

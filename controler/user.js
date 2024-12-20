@@ -11,11 +11,8 @@ export const getUser = async (req, res, next) => {
       return res.status(404).json({ error: "Invalid email or password" });
     }
 
-    console.log(user.password);
-    console.log("password:",password);
    const isPasswordValid = compare(password, user.password);
     if (!isPasswordValid) {
-        console.log("test2");
       return res.status(401).json({ error: "Invalid email or password" });
     }
 
@@ -36,7 +33,6 @@ export const updateUser = async (req, res) => {
         await userModel.updateUser(pool, req.val);
         res.sendStatus(204);
     } catch (err) {
-        console.log(err);
         
         res.sendStatus(500);
     }

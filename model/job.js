@@ -39,7 +39,6 @@ export const getJobs = async (SQLClient, { page = 1, limit = 10, email }) => {
                };
              })
            );
-           console.log(jobsWithAddress);
            return jobsWithAddress;
          } catch (err) {
            console.error('Error fetching reports', err);
@@ -92,12 +91,10 @@ export const getJob = async (SQLClient, { id }) => {
 
 
 export const updateJob = async (SQLClient, { id, report_date, status, solved_date, geocodedaddress, problemtypelabel, userEmail, description }) => {
-  console.log(id, status, geocodedaddress, problemtypelabel, description, solved_date, report_date, userEmail);
 
   try {
     // Gestion des coordonnées à partir de l'adresse
     const adresse = await geocodeAddress(geocodedaddress);
-    console.log('Adresse géocodée:', adresse);
 
     // Initialisation de la requête et des valeurs
     let query = `
@@ -132,7 +129,6 @@ export const updateJob = async (SQLClient, { id, report_date, status, solved_dat
     // Exécution de la requête
     await SQLClient.query(query, values);
 
-    console.log(`Job with ID ${id} successfully updated.`);
     return { success: true };
   } catch (error) {
     console.error('Update failed:', error);

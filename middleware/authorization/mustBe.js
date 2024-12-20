@@ -23,7 +23,6 @@ export const employee = (req, res, next) => {
 }
 
 export const admin = (req, res, next) => {   
-console.log(req?.session?.status);
     if(req?.session?.status === 'Admin'){
         next();
     } else {

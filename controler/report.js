@@ -7,7 +7,6 @@ export const getReport = async (req, res) => {
     const report = await reportModel.getReport(pool, { id: req.params.id }); // Utilise req.params.id pour récupérer l'ID
 
     if (report) {
-      console.log(report);
       // Vérifie et formate la date
       if (report.reportdate) {
         const date = new Date(report.reportdate);
