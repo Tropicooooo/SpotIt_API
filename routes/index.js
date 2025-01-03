@@ -7,6 +7,7 @@ import {default as amusementParkRouter} from './amusementPark.js';
 import {default as reportRouter} from "./report.js";
 import {default as leaderboardRouter} from "./leaderboard.js";
 import {default as reportTypeRouter} from "./reportType.js";
+import {default as userVoucherRouter} from './userVoucher.js';
 import { getUser } from '../controler/user.js';
 import {sign} from "../util/jwt.js";
 
@@ -21,6 +22,7 @@ router.use('/amusement-park', amusementParkRouter);
 router.use("/report", reportRouter);
 router.use("/leaderboard", leaderboardRouter);
 router.use("/reportType", reportTypeRouter);
+router.use("/user-voucher", userVoucherRouter);
 
 /**
  * @swagger

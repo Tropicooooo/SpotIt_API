@@ -53,7 +53,7 @@ CREATE TABLE "problem" (
 CREATE TABLE "voucher" (
     label VARCHAR(50) PRIMARY KEY,
     description TEXT NOT NULL,
-    points_required INT NOT NULL,
+    points_number INT NOT NULL,
     picture VARCHAR(200) NOT NULL
 );
 
@@ -106,7 +106,7 @@ VALUES
     (1, 'Fuite d''eau dans la rue Emile Cuvelier', 50.464508056640625, 4.866512775421143, '/uploads/reports/1734694665608.jpg', 'En attente', '2024-12-10', NULL, 'water_leak', 'michael.wilson@yahoo.be'),
     (2, 'Panne d''électricité dans la rue de Fer', 50.4655684, 4.8651746, '/uploads/reports/1734694595668.jpg', 'En attente', '2024-11-20', NULL, 'electricity_failure', 'sophie.martin@free.be');
 
-INSERT INTO "voucher" (label, description, points_required, picture) 
+INSERT INTO "voucher" (label, description, points_number, picture) 
 VALUES
     ('cavo', 'Cavo est un restaurant de la ville de Namur', 1000, '/uploads/vouchers/cavo.jpg'),
     ('cameo', 'Cameo est un cinema de la ville de Namur', 500, '/uploads/vouchers/cameo.jpg'),

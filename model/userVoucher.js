@@ -9,6 +9,12 @@ export const getUserVoucher = async (SQLClient, {code}) => {  //OK
     return rows[0];
 };
 
+export const getUserVouchersByEmail = async (SQLClient, { email, page = 1, limit = 10 }) => {
+    const offset = (page - 1) * limit;
+    const { rows } = await SQLClient.query('SELECT code AS "code", claim_date AS "claimDate", expiration_date AS "expirationDate", user_email AS "userEmail", voucher_label AS "voucherLabel" FROM "user_voucher" WHERE user_email = $1 LIMIT $2 OFFSET $3', [email, limit, offset]);
+    return rows;
+};
+
 export const getTotalUserVouchers = async (SQLClient) => {  //OK
     const result = await SQLClient.query('SELECT COUNT(*) AS total FROM "user_voucher"');
     const total = result.rows[0].total;
