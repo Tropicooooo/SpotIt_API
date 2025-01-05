@@ -3,7 +3,7 @@ import * as reportTypeModel from "../model/reportType.js";
 
 export const getReportType = async (req, res)=> {
    try {
-       const type = await reportTypeModel.getReportType(pool, req.params);
+       const type = await reportTypeModel.getAllReportType(pool, req.params);
        if (type) {
            res.send(type);
        } else {

@@ -110,6 +110,8 @@ export const addReport = async (
   SQLClient,
   { status, userEmail, description, reportdate, problemtypelabel, picture, responsable, geocodedaddress }
 ) => {
+  console.log('addReport model', { status, userEmail, description, reportdate, problemtypelabel, picture, responsable, geocodedaddress });
+
   reportdate = reportdate || new Date().toISOString();
   try {
     // Démarrer la transaction

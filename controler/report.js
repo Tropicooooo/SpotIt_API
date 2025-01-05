@@ -32,25 +32,16 @@ export const getReport = async (req, res) => {
 // Ajouter un problème
 export const addReport = async (req, res) => {
   try {
-    const { description, latitude, longitude, status, problemTypeLabel, user} = req.body;
-
-    if (!description || !latitude || !longitude || !problemTypeLabel || !status) {
-      console.error("Champs manquants :", { description, latitude, longitude, problemTypeLabel, status });
-      return res.status(400).json({ error: "Champs obligatoires manquants" });
-    }
+    console.log(req.body);
+    const { status, userEmail, description, reportdate, problemtypelabel, responsable, geocodedaddress} = req.body;
 
     const picture = req.file ? `/uploads/reports/${req.file.filename}` : null;
 
     // Passe directement `pool` au modèle
     await reportModel.addReport(pool, {
-      description,
-      latitude,
-      longitude,
-      problemTypeLabel,
-      status,
-      picture,
-      user
+      status, userEmail, description, reportdate, problemtypelabel, picture, responsable, geocodedaddress
     });
+    
 
     res.status(201).json({ message: "Report ajouté avec succès", picture });
   } catch (err) {
