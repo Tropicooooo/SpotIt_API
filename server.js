@@ -12,10 +12,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware CORS pour permettre la communication frontend-backend
-app.use(cors({
-    origin: 'http://localhost:5173'
-}));
-
+app.use(cors());
 // Middleware pour parser le corps des requêtes JSON
 app.use(express.json());
 

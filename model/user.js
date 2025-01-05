@@ -46,7 +46,7 @@ export const createUser = async (SQLClient, {email, firstname, lastname, passwor
     }
 
 export	const updateUser = async (SQLClient,{email, firstname, lastname, password, 
-    birthdate, phone, cityLabel, postalCode, streetLabel, streetNumber, pointsNumber, experience, role = "NULL"}) => { 
+    birthdate, phone, cityLabel, postalCode, streetLabel, streetNumber, pointsNumber, experience, role}) => { 
     
     let query = 'UPDATE "user" SET ';
     const querySet = [];
@@ -135,7 +135,7 @@ export const getUsersName = async (SQLClient) => {
 
 export const getUserByEmail = async (SQLClient, email) => {
     const { rows } = await SQLClient.query(
-      'SELECT email  AS "email", password  AS "password", role_label as "role" FROM "user" WHERE email = $1',
+      'SELECT email AS "email",first_name AS "firstname",last_name AS "lastname", TO_CHAR(birthdate, \'YYYY-MM-DD\') AS "birthdate",phone_number AS "phone",city_label AS "cityLabel", postal_code AS "postalCode", street_label AS "streetLabel", street_number AS "streetNumber", points_number AS "pointsNumber", experience AS "experience", role_label AS "role" FROM "user" WHERE email = $1',
       [email]
     );
     return rows[0]; // Retourne l'utilisateur ou undefined

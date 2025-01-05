@@ -1,27 +1,15 @@
+import { log } from 'console';
 import {pool} from '../database/database.js';
 import * as userModel from '../model/user.js';
-import {compare} from '../util/index.js';
 
 export const getUser = async (req, res, next) => {
-  const { email, password } = req.body;
+  const { email} = req.session;
   try {
-    // Récupérer l'utilisateur via le modèle
     const user = await userModel.getUserByEmail(pool, email);
     if (!user) {
       return res.status(404).json({ error: "Invalid email or password" });
     }
-
-   const isPasswordValid = compare(password, user.password);
-    if (!isPasswordValid) {
-      return res.status(401).json({ error: "Invalid email or password" });
-    }
-
-    // Ajouter les infos utilisateur à req pour le prochain middleware
-    req.user = {
-      email: user?.email,
-      status: user?.role,
-    };
-    next(); // Passe au middleware suivant (génération du token)
+    return res.send(user);
   } catch (err) {
     console.error("Error in getUser:", err);
     res.status(500).json({ error: "Internal server error" });
@@ -37,4 +25,5 @@ export const updateUser = async (req, res) => {
         res.sendStatus(500);
     }
 };
+
 
