@@ -52,7 +52,7 @@ export const updateUser = async (req, res) => {
 };
 
 export const createUser = async (req, res) => {
-    try {        
+    try {       
         await userModel.createUser(pool, req.body);
         return res.sendStatus(204);
     } catch (err) {

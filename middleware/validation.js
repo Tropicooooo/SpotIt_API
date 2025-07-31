@@ -10,7 +10,7 @@ export const userValidatorMiddleware = {
             req.val = await userValidator.user.validate(req.body);
             next();
         } catch (e) {
-            res.status(400).send(e.messages);
+            res.status(400).send(e);
         }
     },
 

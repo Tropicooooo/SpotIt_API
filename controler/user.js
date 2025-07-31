@@ -1,6 +1,7 @@
 import { log } from 'console';
 import {pool} from '../database/database.js';
 import * as userModel from '../model/user.js';
+import { sign } from '../util/jwt.js';
 
 export const getUser = async (req, res, next) => {
   const { email} = req.session;
@@ -11,7 +12,6 @@ export const getUser = async (req, res, next) => {
     }
     return res.send(user);
   } catch (err) {
-    console.error("Error in getUser:", err);
     res.status(500).json({ error: "Internal server error" });
   }
 };
@@ -25,5 +25,23 @@ export const updateUser = async (req, res) => {
         res.sendStatus(500);
     }
 };
+
+export const createUser = async (req, res) => {
+    try {
+        await userModel.createUser(pool, req.val);
+        const token = sign(
+          { email: req.val.email, status: "User" },
+          { expiresIn: '30d' }
+        );
+
+        res.status(201).json({
+            message: "User created successfully",
+            user: req.val,
+            token
+        });
+    } catch (err) {
+-        res.status(500).json({ error: err.message || "Internal server error" });
+    }
+}
 
 
