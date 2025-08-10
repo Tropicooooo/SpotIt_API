@@ -30,7 +30,7 @@ export const getJob = async (req, res) => {
 export const updateJob = async (req, res) => {
     try {
         await jobModel.updateJob(pool, req.body);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         console.error("Erreur dans le contrôleur updateJob :", err);
         return res.sendStatus(500);

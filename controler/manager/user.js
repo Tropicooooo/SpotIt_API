@@ -30,7 +30,7 @@ export const getUser = async (req, res) => {
 export const deleteUser = async (req, res) => {
     try {
         await userModel.deleteUser(pool, req.query);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (e) {
         return res.sendStatus(500);
     }
@@ -39,7 +39,7 @@ export const deleteUser = async (req, res) => {
 export const updateUser = async (req, res) => {
     try {
         await userModel.updateUser(pool, req.body);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }
@@ -48,7 +48,7 @@ export const updateUser = async (req, res) => {
 export const createUser = async (req, res) => {
     try {       
         await userModel.createUser(pool, req.body);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }

@@ -30,7 +30,7 @@ export const getUserVoucher = async (req, res) => {
 export const deleteUserVoucher = async (req, res) => {
     try {
         await userVoucherModel.deleteUserVoucher(pool, req.query);  //OK
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (e) {
         return res.sendStatus(500);
     }
@@ -39,7 +39,7 @@ export const deleteUserVoucher = async (req, res) => {
 export const updateUserVoucher = async (req, res) => {
     try {
         await userVoucherModel.updateUserVoucher(pool, req.val, req.body?.codeUpdate);  //OK
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }
@@ -48,7 +48,7 @@ export const updateUserVoucher = async (req, res) => {
 export const createUserVoucher = async (req, res) => {
     try {        
         await userVoucherModel.createUserVoucher(pool, req.val, req.body?.codeUpdate);  //OK
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }

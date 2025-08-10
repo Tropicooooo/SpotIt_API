@@ -33,7 +33,7 @@ export const getReportTypes = async (req, res) => {
 export const updateReportType = async (req, res) => {
     try {
         await reportTypeModel.updateReportType(pool, req.body?.currentReportType, req.body?.labelUpdate);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }
@@ -42,7 +42,7 @@ export const updateReportType = async (req, res) => {
 export const createReportType = async (req, res) => {
     try {
         await reportTypeModel.createReportType(pool, req.body?.currentReportType);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }
@@ -51,7 +51,7 @@ export const createReportType = async (req, res) => {
 export const deleteReportType = async (req, res) => {
     try {
         await reportTypeModel.deleteReportType(pool, req.query);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }

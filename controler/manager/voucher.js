@@ -30,7 +30,7 @@ export const getVoucher = async (req, res) => {
 export const deleteVoucher = async (req, res) => {
     try {
         await voucherModel.deleteVoucher(pool, req.query);  //OK
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (e) {
         return res.sendStatus(500);
     }
@@ -39,7 +39,7 @@ export const deleteVoucher = async (req, res) => {
 export const updateVoucher = async (req, res) => {
     try {
         await voucherModel.updateVoucher(pool, req.body, req.body?.labelUpdate);  //OK
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }
@@ -58,7 +58,7 @@ export const createVoucher = async (req, res) => {
             pointsRequired,
             picture
         });
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }

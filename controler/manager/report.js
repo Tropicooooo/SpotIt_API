@@ -29,7 +29,7 @@ export const getAllReport = async (req, res) => {
 export const updateReport = async (req, res) => {
      try {
         await reportModel.updateReport(pool, req.body);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }
@@ -52,7 +52,7 @@ export const createReport = async (req, res) => {
             picture,
             responsable
         });
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }
@@ -63,7 +63,7 @@ export const deleteReport = async (req, res) => {
     try {
         await reportModel.deleteReport(pool, req.query);
         
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (e) {
         return res.sendStatus(500);
     }

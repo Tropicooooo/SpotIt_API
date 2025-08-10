@@ -30,7 +30,7 @@ export const getEmployee = async (req, res) => {
 export const deleteEmployee = async (req, res) => {
     try {
         await employeModel.deleteEmployee(pool, req.query);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (e) {
         return res.sendStatus(500);
     }
@@ -39,7 +39,7 @@ export const deleteEmployee = async (req, res) => {
 export const updateEmployee = async (req, res) => {
     try {
         await employeModel.updateEmployee(pool, req.val, req.body?.emailUpdate);
-        return res.sendStatus(204);
+        return res.sendStatus(201);
     } catch (err) {
         return res.sendStatus(500);
     }
