@@ -6,7 +6,6 @@ import {user} from '../middleware/authorization/mustBe.js';
 
 const router = Router();
 
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdGF0dXMiOiJ1c2VyIiwiZW1haWwiOiJhbGljZS5zbWl0aEBnbWFpbC5jb20ifQ.yFyNQXzwkykCqvmhTQByTzsSK2Hk66fUQivBcx9VCQ0
 /**
  * @swagger
  * /user/me:
