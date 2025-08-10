@@ -149,11 +149,9 @@ router.get('/userslist',checkJWT , manager, getUsersName);
 // Routes pour les vouchers
 router.get('/vouchers',checkJWT , admin, getVouchers);
 router.get('/voucher',checkJWT , admin, getVoucher);
-//router.post('/voucher', voucherUpload.single('picture'), MPV.voucher, createVoucher);
 router.post('/voucher',checkJWT , admin, voucherUpload.single('picture'), createVoucher);
 router.delete('/voucher',checkJWT , admin, deleteVoucher);
 router.patch('/voucher',checkJWT , admin, voucherUpload.single('picture'), updateVoucher);
-//router.patch('/voucher', voucherUpload.single('picture'), MPV.voucher, updateVoucher);
 
 // Routes pour les vouchers réclamés
 router.get('/user-vouchers', checkJWT , admin, getUserVouchers);
@@ -171,9 +169,7 @@ router.get('/employeeslist', checkJWT , manager, getEmployeesName);
 router.get('/all-reports',checkJWT , manager, getAllReports);
 router.delete('/all-reports',checkJWT , manager, deleteReport);
 router.get('/all-report',checkJWT , manager, getAllReport);
-//router.patch('/all-report',reportUpload.single('picture'), MPV.report, updateReport);
 router.patch('/all-report',checkJWT , manager,reportUpload.single('picture'), updateReport);
-//router.post('/all-report',reportUpload.single('picture'), MPV.report, createReport);
 router.post('/all-report',checkJWT , manager,reportUpload.single('picture'), createReport);
 
 router.get('/jobs',checkJWT , employee, getJobs);

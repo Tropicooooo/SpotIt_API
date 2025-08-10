@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { getUserVouchers } from "../controler/userVoucher.js";
 import { createUserVoucher } from '../model/userVoucher.js';
+import {managerValidatorMiddleware as PVM} from '../middleware/validation.js';
 
 const router = Router();
 
@@ -72,6 +73,6 @@ const router = Router();
  */
 
 router.get("/", getUserVouchers);
-router.post("/", createUserVoucher);
+router.post("/", PVM.userVoucher,createUserVoucher);
 
 export default router;

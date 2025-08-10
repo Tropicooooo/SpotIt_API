@@ -3,6 +3,7 @@ import * as voucherValidator from './validator/voucher.js';
 import * as EmployeeValidator from './validator/employee.js';
 import * as ReportValidator from './validator/report.js';
 import * as ReportTypeValidator from './validator/reportType.js';
+import * as userVoucherValidator from './validator/userVoucher.js';
 
 export const userValidatorMiddleware = {
     user : async (req, res, next) => {

@@ -3,7 +3,7 @@ import * as userModel from '../model/user.js';
 import { sign } from '../util/jwt.js';
 import { compare } from '../util/index.js'; 
 
-export const loginUser = async (req, res, next) => {
+export const loginUser = async (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -28,7 +28,6 @@ export const loginUser = async (req, res, next) => {
     const token = sign({ email: user.email, status: user.role || "User" }, { expiresIn: '30d' });
 
     // Tu peux soit renvoyer directement la réponse ici,
-    // soit la passer à next() avec req.user/token (selon ton flow)
     return res.json({ message: "Login successful", user, token });
 
   } catch (err) {
@@ -37,7 +36,7 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
-export const getUser = async (req, res, next) => {
+export const getUser = async (req, res) => {
   const { email } = req.session;
   try {
     console.log('Fetching user for email:', email);
