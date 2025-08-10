@@ -23,7 +23,7 @@ const UPLOADS_FOLDER = path.join(__dirname, './uploads');
 app.use('/uploads', express.static(UPLOADS_FOLDER));
 
 
-app.use(Router);
+app.use("/v1", Router);
 
 // Démarre le serveur
 app.listen(port, () => {

@@ -1,11 +1,14 @@
 import Router from 'express-promise-router';
-import { getUsers, getUser,updateUser, deleteUser, createUser } from '../controler/manager.js';
-import { getVouchers, getVoucher, createVoucher, deleteVoucher, updateVoucher } from '../controler/manager.js';
-import { getUserVouchers, getUserVoucher, createUserVoucher, deleteUserVoucher, updateUserVoucher } from '../controler/manager.js';
+import { getUsers, getUser,updateUser, deleteUser, createUser, getUsersName } from '../controler/manager/user.js';
+import { getVouchers, getVoucher, createVoucher, deleteVoucher, updateVoucher } from '../controler/manager/voucher.js';
+import { getUserVouchers, getUserVoucher, createUserVoucher, deleteUserVoucher, updateUserVoucher } from '../controler/manager/userVoucher.js';
 import { managerValidatorMiddleware as MPV } from '../middleware/validation.js';
 import {checkJWT} from '../middleware/identification/jwt.js';
 import {manager, employee, admin} from '../middleware/authorization/mustBe.js';
-import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getAllReports, getAllReport, updateReport, createReport,getJobs,getJob,updateJob, deleteReport, getReportTypes, getEmployeesName,updateReportType,createReportType, getAllReportType ,deleteReportType, getUsersName} from '../controler/manager.js';
+import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getEmployeesName } from '../controler/manager/employee.js';
+import { getAllReports, getAllReport, updateReport, createReport, deleteReport } from '../controler/manager/report.js';
+import { getJobs, getJob, updateJob } from '../controler/manager/job.js';
+import { getReportTypes, getAllReportType, updateReportType, createReportType, deleteReportType } from '../controler/manager/reportType.js';
 import { configureUpload } from '../upload/upload.js';
 import path from 'path';
 
