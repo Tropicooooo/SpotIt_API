@@ -23,7 +23,6 @@ export const getReport = async (req, res) => {
       res.sendStatus(404); // Problème non trouvé
     }
   } catch (err) {
-    console.error("Erreur lors de la récupération du problème :", err);
     res.sendStatus(500); // Erreur serveur
   }
 };
@@ -32,7 +31,6 @@ export const getReport = async (req, res) => {
 // Ajouter un problème
 export const addReport = async (req, res) => {
   try {
-    console.log(req.body);
     const { status, userEmail, description, reportdate, problemtypelabel, responsable, geocodedaddress} = req.body;
 
     const picture = req.file ? `/uploads/reports/${req.file.filename}` : null;
@@ -45,7 +43,6 @@ export const addReport = async (req, res) => {
 
     res.status(201).json({ message: "Report ajouté avec succès", picture });
   } catch (err) {
-    console.error('Erreur serveur dans addReport :', err);
     res.status(500).json({ error: 'Une erreur interne est survenue.' });
   }
 };
@@ -96,7 +93,6 @@ export const getReportsInRegion = async (req, res) => {
 
     res.json(formattedReports); // Envoi des rapports avec les dates formatées
   } catch (error) {
-    console.error("Erreur lors de la récupération des problèmes :", error);
     res.status(500).json({ error: "Erreur interne du serveur." });
   }
 };

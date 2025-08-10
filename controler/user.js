@@ -40,7 +40,9 @@ export const loginUser = async (req, res, next) => {
 export const getUser = async (req, res, next) => {
   const { email } = req.session;
   try {
+    console.log('Fetching user for email:', email);
     const user = await userModel.getUserByEmail(pool, email);
+    console.log('User fetched:', user);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
