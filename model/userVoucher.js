@@ -1,35 +1,25 @@
-export const getUserVouchers = async (SQLClient, { page = 1, limit = 10 }) => {
+export const getAllUserVouchers = async (SQLClient, { page = 1, limit = 10 }) => {
     const offset = (page - 1) * limit; 
     const {rows} = await SQLClient.query('SELECT code AS "code", claim_date AS "claimDate", expiration_date AS "expirationDate", user_email AS "userEmail", voucher_label AS "voucherLabel" FROM "user_voucher" LIMIT $1 OFFSET $2', [limit, offset]);    
     return rows;
 };
 
-export const getUserVoucher = async (SQLClient, {code}) => {  //OK   
-    const {rows} = await SQLClient.query('SELECT code AS "code", claim_date AS "claimDate", expiration_date AS "expirationDate", user_email AS "userEmail", voucher_label AS "voucherLabel" FROM "user_voucher" WHERE code = $1', [code]);
-    return rows[0];
-};
-
-export const getUserVouchersByEmail = async (SQLClient, { email, page = 1, limit = 10 }) => {
+export const getAllUserVouchersByEmail = async (SQLClient, { email, page = 1, limit = 10 }) => {
     const offset = (page - 1) * limit;
     const { rows } = await SQLClient.query('SELECT code AS "code", claim_date AS "claimDate", expiration_date AS "expirationDate", user_email AS "userEmail", voucher_label AS "voucherLabel" FROM "user_voucher" WHERE user_email = $1 LIMIT $2 OFFSET $3', [email, limit, offset]);
     return rows;
 };
 
-export const getTotalUserVouchers = async (SQLClient) => {  //OK
-    const result = await SQLClient.query('SELECT COUNT(*) AS total FROM "user_voucher"');
-    const total = result.rows[0].total;
-    return total;
+export const getOneUserVoucher = async (SQLClient, {code}) => { 
+    const {rows} = await SQLClient.query('SELECT code AS "code", claim_date AS "claimDate", expiration_date AS "expirationDate", user_email AS "userEmail", voucher_label AS "voucherLabel" FROM "user_voucher" WHERE code = $1', [code]);
+    return rows[0];
 };
 
-export const deleteUserVoucher = async (SQLClient, {code}) => {  //OK  
-    return await SQLClient.query('DELETE FROM "user_voucher" WHERE code = $1', [code]);
-}
-
-export const createUserVoucher = async (SQLClient, { code, claimDate, expirationDate, userEmail, voucherLabel }) => {  //OK
+export const createUserVoucher = async (SQLClient, { code, claimDate, expirationDate, userEmail, voucherLabel }) => {  
     return await SQLClient.query('INSERT INTO "user_voucher" (code, claim_date, expiration_date, user_email, voucher_label) VALUES ($1, $2, $3, $4, $5)', [code, claimDate, expirationDate, userEmail, voucherLabel]);
 }
 
-export	const updateUserVoucher = async (SQLClient, { code, claimDate, expirationDate, userEmail, voucherLabel }, codeUpdate) => {   //OK
+export	const updateUserVoucher = async (SQLClient, { code, claimDate, expirationDate, userEmail, voucherLabel }, codeUpdate) => {  
     let query = 'UPDATE "user_voucher" SET';
     const querySet = [];
     const queryValues = [];
@@ -61,3 +51,13 @@ export	const updateUserVoucher = async (SQLClient, { code, claimDate, expiration
         throw new Error('No field given');
     }
 }
+
+export const deleteUserVoucher = async (SQLClient, {code}) => {  
+    return await SQLClient.query('DELETE FROM "user_voucher" WHERE code = $1', [code]);
+}
+
+export const getTotalUserVouchers = async (SQLClient) => { 
+    const result = await SQLClient.query('SELECT COUNT(*) AS total FROM "user_voucher"');
+    const total = result.rows[0].total;
+    return total;
+};

@@ -1,14 +1,16 @@
-import {pool} from '../database/database.js';
+import { pool } from '../database/database.js';
 import * as amusementParkModel from '../model/amusementPark.js';
 
-export const getAmusementParks = async (req, res) => {
+export const getAllAmusementParks = async (req, res) => {
     try {    
-        const amusementParks = await amusementParkModel.getAmusementParks(pool, req.query);
+        const amusementParks = await amusementParkModel.getAllAmusementParks(pool, req.query);
+
         if (amusementParks === null) {
-            return res.sendStatus(404);
+            return res.status(404).json({ message: '[AMUSEMENT_PARK] Résultat de la recherche : 0 trouvé(s).' });
         }     
+
         return res.send({ amusementParks });
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 };

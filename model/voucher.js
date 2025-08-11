@@ -1,23 +1,13 @@
-export const getVouchers = async (SQLClient, { page = 1, limit = 10 }) => {
+export const getAllVouchers = async (SQLClient, { page = 1, limit = 10 }) => {
     const offset = (page - 1) * limit; 
     const {rows} = await SQLClient.query('SELECT label AS "label", description AS "description", points_required AS "pointsRequired", picture AS "picture" FROM "voucher" LIMIT $1 OFFSET $2', [limit, offset]);    
     return rows;
 };
 
-export const getVoucher = async (SQLClient, {label}) => { 
+export const getOneVoucher = async (SQLClient, {label}) => { 
     const {rows} = await SQLClient.query('SELECT label AS "label", description AS "description", points_required AS "pointsRequired", picture AS "picture" FROM "voucher" WHERE label = $1', [label]);
     return rows[0];
 };
-
-export const getTotalVouchers = async (SQLClient) => {
-    const result = await SQLClient.query('SELECT COUNT(*) AS total FROM "voucher"');
-    const total = result.rows[0].total;
-    return total;
-};
-
-export const deleteVoucher = async (SQLClient, {label}) => { 
-    return await SQLClient.query('DELETE FROM "voucher" WHERE label = $1', [label]);
-}
 
 export const createVoucher = async (SQLClient, { label, description, pointsRequired, picture }) => {
     return await SQLClient.query('INSERT INTO "voucher" (label, description, points_required, picture) VALUES ($1, $2, $3, $4)', [label, description, pointsRequired, picture]);
@@ -51,3 +41,13 @@ export	const updateVoucher = async (SQLClient, { label, description, pointsRequi
         throw new Error('No field given');
     }
 }
+
+export const deleteVoucher = async (SQLClient, {label}) => { 
+    return await SQLClient.query('DELETE FROM "voucher" WHERE label = $1', [label]);
+}
+
+export const getTotalVouchers = async (SQLClient) => {
+    const result = await SQLClient.query('SELECT COUNT(*) AS total FROM "voucher"');
+    const total = result.rows[0].total;
+    return total;
+};

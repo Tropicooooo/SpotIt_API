@@ -1,7 +1,8 @@
-export const getReportTypes = async (SQLClient, { page = 1, limit = 10 }) => {
+export const getAllReportTypes = async (SQLClient, { page = 1, limit = 10 }) => {
     const { rows } = await SQLClient.query(
       'SELECT * FROM problem_type LIMIT $1 OFFSET $2', [limit, (page - 1) * limit]
     );
+
     return rows;
 };
 
@@ -9,6 +10,7 @@ export const getAllReportType = async (SQLClient) => {
   const { rows } = await SQLClient.query(
     'SELECT * FROM problem_type'
   );
+ 
   return rows;
 };
 
@@ -16,14 +18,15 @@ export const getAllReportType = async (SQLClient) => {
 export const createReportType = async (SQLClient, { label, description,  emergency_degree}) => {
     try {
         await SQLClient.query(`INSERT INTO problem_type(label, description, emergency_degree) VALUES ($1, $2, $3);`, [label, description, emergency_degree]);
-    } catch (err) {
-        console.error('Failed to create report type', err);
+    } catch (e) {
+        console.error('');
     }
 }
 
 export const updateReportType = async (SQLClient, { label, description, emergency_degree }, labelUpdate) => {
     try {
-        let query = `
+        let query = 
+        `
             UPDATE problem_type
             SET 
                 description = $1,
@@ -31,7 +34,6 @@ export const updateReportType = async (SQLClient, { label, description, emergenc
         `;
         const values = [description, emergency_degree];
 
-        // Si labelUpdate est fourni, on met aussi à jour le label
         if (labelUpdate) {
             query += `, label = $3 WHERE label = $4;`;
             values.push(label, labelUpdate);
@@ -46,8 +48,6 @@ export const updateReportType = async (SQLClient, { label, description, emergenc
         console.error('Failed to update report type', err);
     }
 };
-
-
 
 export const deleteReportType = async (SQLClient, { label }) => {
     try {

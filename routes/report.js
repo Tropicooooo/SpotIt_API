@@ -1,6 +1,7 @@
+import { getOneReport, createReport, getAllReportsByRegion } from "../controler/report.js";
+
 import { Router } from 'express';
 import path from 'path';
-import { getReport, addReport, getReportsInRegion } from "../controler/report.js";
 import { configureUpload } from '../upload/upload.js';
 
 const router = Router();
@@ -48,7 +49,8 @@ const reportUpload = configureUpload(REPORTS_FOLDER);
  *       404:
  *         description: Rapport non trouvé
  */
-router.get("/:id", getReport);
+
+router.get("/:id", getOneReport);
 
 /**
  * @swagger
@@ -83,7 +85,8 @@ router.get("/:id", getReport);
  *                     type: string
  *                     format: date-time
  */
-router.get("/", getReportsInRegion);
+
+router.get("/", getAllReportsByRegion);
 
 /**
  * @swagger
@@ -120,6 +123,7 @@ router.get("/", getReportsInRegion);
  *       400:
  *         description: Données invalides
  */
-router.post("/", reportUpload.single('image'), addReport);
+
+router.post("/", reportUpload.single('image'), createReport);
 
 export default router;

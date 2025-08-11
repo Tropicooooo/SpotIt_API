@@ -1,59 +1,66 @@
-import {pool} from '../../database/database.js';
-import * as employeModel from '../../model/employee.js';
+import { pool } from '../../database/database.js';
+import * as employeeModel from '../../model/employee.js';
 
-// Gestion 
-export const getEmployees = async (req, res) => {
+export const getAllEmployees = async (req, res) => {
     try {     
-        const employees = await employeModel.getEmployees(pool, req.query);
-        const total = await employeModel.getTotalEmployees(pool);
+        const employees = await employeeModel.getAllEmployees(pool, req.query);
+        const total = await employeeModel.getTotalEmployees(pool);
+
         if (employees === null) {
-            return res.sendStatus(404);
-        }     
-        return res.send({employees,total});
+            return res.status(404).json({ message: '[EMPLOYE] Résultat de la recherche : 0 trouvé(s).' });
+        }   
+
+        return res.send({ employees, total });
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 };
 
-export const getEmployee = async (req, res) => {
+export const getAllEmployeesByName = async (req, res) => {
     try {
-        const employee = await employeModel.getEmployee(pool, req.query);
-        if (!employee) {
-            return res.sendStatus(404);
-        } 
-        return res.send(employee);
-    } catch (e) {
-        return res.sendStatus(500);
+        const employees = await employeeModel.getAllEmployeesByName(pool, req.query);
+
+        if (!employees) {
+            return res.status(404).json({ message: '[EMPLOYE] Résultat de la recherche : 0 trouvé(s).' });
+        }
+        
+        return res.send(employees);
+    }
+    catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }
 
-export const deleteEmployee = async (req, res) => {
+export const getOneEmployee = async (req, res) => {
     try {
-        await employeModel.deleteEmployee(pool, req.query);
-        return res.sendStatus(201);
+        const employee = await employeeModel.getOneEmployee(pool, req.query);
+        
+        if (!employee) {
+            return res.status(404).json({ message: '[EMPLOYE] Résultat de la recherche : 0 trouvé(s).' });
+        }
+
+        return res.send(employee);
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }
 
 export const updateEmployee = async (req, res) => {
     try {
-        await employeModel.updateEmployee(pool, req.val, req.body?.emailUpdate);
-        return res.sendStatus(201);
-    } catch (err) {
-        return res.sendStatus(500);
+        await employeeModel.updateEmployee(pool, req.val, req.body?.emailUpdate);
+
+        return res.status(201).json({ message: '[EMPLOYE] Résultat de la mise à jour : Mise à jour réussie.' });
+    } catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }
 
-export const getEmployeesName = async (req, res) => {
+export const deleteEmployee = async (req, res) => {
     try {
-        const employees = await employeModel.getEmployeesName(pool, req.query);
-        if (!employees) {
-            return res.sendStatus(404);
-        }
-        return res.send(employees);
-    }
-    catch (e) {
-        return res.sendStatus(500);
+        await employeeModel.deleteEmployee(pool, req.query);
+
+        return res.status(201).json({ message: '[EMPLOYE] Résultat de la suppression : Suppression réussie.' });
+    } catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }

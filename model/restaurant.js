@@ -1,4 +1,4 @@
-export const getRestaurants = async (SQLClient, { page = 1, limit = 10 }) => {
+export const getAllRestaurants = async (SQLClient, { page = 1, limit = 10 }) => {
     const offset = (page - 1) * limit;
 
     const query = `

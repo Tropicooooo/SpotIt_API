@@ -11,7 +11,6 @@ const reportSchema = vine.object({
     solved_date: vine.date()
 });
 
-// Validation personnalisée pour `status`
 export const report = vine.compile(reportSchema);
 
 export const validateStatus = (status) => {

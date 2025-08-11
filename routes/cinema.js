@@ -1,5 +1,6 @@
+import { getAllCinemas } from "../controler/cinema.js";
+
 import { Router } from 'express';
-import { getCinemas } from "../controler/cinema.js";
 
 const router = Router();
 
@@ -37,6 +38,6 @@ const router = Router();
  *                     example: 10
  */
 
-router.get("/", getCinemas);
+router.get("/", getAllCinemas);
 
 export default router;

@@ -1,5 +1,6 @@
+import { getAllReportType } from "../controler/reportType.js";
+
 import { Router } from 'express';
-import { getReportType } from "../controler/reportType.js";
 
 const router = Router();
 
@@ -29,6 +30,6 @@ const router = Router();
  *                     example: "Bug Report"
  */
 
-router.get("/", getReportType);
+router.get("/", getAllReportType);
 
 export default router;

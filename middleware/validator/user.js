@@ -30,3 +30,4 @@ const updateWithoutPasswordSchema = vine.object({
 export const 
         user = vine.compile(userSchema),
         updateWithoutPassword = vine.compile(updateWithoutPasswordSchema);
+        

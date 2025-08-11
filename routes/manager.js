@@ -1,14 +1,15 @@
+import { getAllUsers, getAllUsersByName, getOneUser, createUser, updateUser, deleteUser } from '../controler/manager/user.js';
+import { getAllVouchers, getOneVoucher, createVoucher, updateVoucher, deleteVoucher } from '../controler/manager/voucher.js';
+import { getAllUserVouchers, getOneUserVoucher, createUserVoucher, updateUserVoucher, deleteUserVoucher } from '../controler/manager/userVoucher.js';
+import { getAllEmployees, getAllEmployeesByName, getOneEmployee, updateEmployee, deleteEmployee } from '../controler/manager/employee.js';
+import { getAllReports, getAllReport, createReport, updateReport, deleteReport } from '../controler/manager/report.js';
+import { getAllJobs, getOneJob, updateJob } from '../controler/manager/job.js';
+import { getAllReportTypes, getAllReportType, createReportType, updateReportType, deleteReportType } from '../controler/manager/reportType.js';
+
 import Router from 'express-promise-router';
-import { getUsers, getUser,updateUser, deleteUser, createUser, getUsersName } from '../controler/manager/user.js';
-import { getVouchers, getVoucher, createVoucher, deleteVoucher, updateVoucher } from '../controler/manager/voucher.js';
-import { getUserVouchers, getUserVoucher, createUserVoucher, deleteUserVoucher, updateUserVoucher } from '../controler/manager/userVoucher.js';
 import { managerValidatorMiddleware as MPV } from '../middleware/validation.js';
-import {checkJWT} from '../middleware/identification/jwt.js';
-import {manager, employee, admin} from '../middleware/authorization/mustBe.js';
-import { getEmployees, deleteEmployee, updateEmployee, getEmployee, getEmployeesName } from '../controler/manager/employee.js';
-import { getAllReports, getAllReport, updateReport, createReport, deleteReport } from '../controler/manager/report.js';
-import { getJobs, getJob, updateJob } from '../controler/manager/job.js';
-import { getReportTypes, getAllReportType, updateReportType, createReportType, deleteReportType } from '../controler/manager/reportType.js';
+import { checkJWT } from '../middleware/identification/jwt.js';
+import { manager, employee, admin } from '../middleware/authorization/mustBe.js';
 import { configureUpload } from '../upload/upload.js';
 import path from 'path';
 
@@ -50,7 +51,8 @@ const reportUpload = configureUpload(REPORTS_FOLDER);
  *                     description: The user's status.
  *                     example: "user"
  */
-router.get('/users', checkJWT , manager,  getUsers);
+
+router.get('/users', checkJWT , manager, getAllUsers);
 
 /**
  * @swagger
@@ -79,7 +81,8 @@ router.get('/users', checkJWT , manager,  getUsers);
  *                   description: The user's status.
  *                   example: "user"
  */
-router.get('/user', checkJWT , manager,  getUser)
+
+router.get('/user', checkJWT , manager, getOneUser)
 
 /**
  * @swagger
@@ -100,7 +103,8 @@ router.get('/user', checkJWT , manager,  getUser)
  *                   description: Success message.
  *                   example: "User deleted successfully"
  */
-router.delete('/user', checkJWT , manager,  deleteUser);
+
+router.delete('/user', checkJWT , manager, deleteUser);
 
 /**
  * @swagger
@@ -140,47 +144,46 @@ router.delete('/user', checkJWT , manager,  deleteUser);
  *                   description: The user's status.
  *                   example: "user"
  */
+
 router.patch('/userWithoutPassword', checkJWT , manager, MPV.updateWithoutPassword, updateUser);
 
-
-router.patch('/user', MPV.user,  checkJWT , manager, updateUser);
+router.get('/userslist',checkJWT , manager, getAllUsersByName);
 router.post('/user', MPV.user,  checkJWT , manager, createUser);
-router.get('/userslist',checkJWT , manager, getUsersName);
-// Routes pour les vouchers
-router.get('/vouchers',checkJWT , admin, getVouchers);
-router.get('/voucher',checkJWT , admin, getVoucher);
+router.patch('/user', MPV.user,  checkJWT , manager, updateUser);
+
+router.get('/vouchers',checkJWT , admin, getAllVouchers);
+router.get('/voucher',checkJWT , admin, getOneVoucher);
 router.post('/voucher',checkJWT , admin, voucherUpload.single('picture'), createVoucher);
-router.delete('/voucher',checkJWT , admin, deleteVoucher);
 router.patch('/voucher',checkJWT , admin, voucherUpload.single('picture'), updateVoucher);
+router.delete('/voucher',checkJWT , admin, deleteVoucher);
 
-// Routes pour les vouchers réclamés
-router.get('/user-vouchers', checkJWT , admin, getUserVouchers);
-router.get('/user-voucher', checkJWT , admin, getUserVoucher);
+router.get('/user-vouchers', checkJWT , admin, getAllUserVouchers);
+router.get('/user-voucher', checkJWT , admin, getOneUserVoucher);
 router.post('/user-voucher', checkJWT , admin, MPV.userVoucher, createUserVoucher);
-router.delete('/user-voucher', checkJWT , admin, deleteUserVoucher);
 router.patch('/user-voucher', checkJWT , admin, MPV.userVoucher, updateUserVoucher);
+router.delete('/user-voucher', checkJWT , admin, deleteUserVoucher);
 
-router.get('/employees', checkJWT , manager, getEmployees);
-router.get('/employee', checkJWT , manager,  getEmployee);
-router.delete('/employee', checkJWT , manager, deleteEmployee);
+router.get('/employees', checkJWT , manager, getAllEmployees);
+router.get('/employeeslist', checkJWT , manager, getAllEmployeesByName);
+router.get('/employee', checkJWT , manager,  getOneEmployee);
 router.patch('/employee', checkJWT , manager,  MPV.employee, updateEmployee);
-router.get('/employeeslist', checkJWT , manager, getEmployeesName);
+router.delete('/employee', checkJWT , manager, deleteEmployee);
 
 router.get('/all-reports',checkJWT , manager, getAllReports);
-router.delete('/all-reports',checkJWT , manager, deleteReport);
 router.get('/all-report',checkJWT , manager, getAllReport);
-router.patch('/all-report',checkJWT , manager,reportUpload.single('picture'), updateReport);
 router.post('/all-report',checkJWT , manager,reportUpload.single('picture'), createReport);
+router.patch('/all-report',checkJWT , manager,reportUpload.single('picture'), updateReport);
+router.delete('/all-reports',checkJWT , manager, deleteReport);
 
-router.get('/jobs',checkJWT , employee, getJobs);
-router.get('/job',checkJWT , employee, getJob);
+router.get('/jobs',checkJWT , employee, getAllJobs);
+router.get('/job',checkJWT , employee, getOneJob);
 router.patch('/job',checkJWT , employee, reportUpload.single('picture'), updateJob);
 
 router.get('/reporttype',checkJWT , employee, getAllReportType);
 
-router.get('/all-report-types', checkJWT , admin, getReportTypes);
-router.patch('/all-report-type', checkJWT , admin, MPV.reportType,updateReportType);
+router.get('/all-report-types', checkJWT , admin, getAllReportTypes);
 router.post('/all-report-type', checkJWT , admin,MPV.reportType, createReportType);
+router.patch('/all-report-type', checkJWT , admin, MPV.reportType,updateReportType);
 router.delete('/all-report-type',checkJWT , admin, deleteReportType);
 
 export default router;

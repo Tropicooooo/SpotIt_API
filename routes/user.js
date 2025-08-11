@@ -1,8 +1,9 @@
+import { getUserByEmail, createUser, updateUser } from '../controler/user.js';
+
 import Router from 'express-promise-router';
-import {updateUser, getUser, createUser} from '../controler/user.js';
-import {userValidatorMiddleware as PVM} from '../middleware/validation.js';
-import {checkJWT} from '../middleware/identification/jwt.js';
-import {user} from '../middleware/authorization/mustBe.js';
+import { userValidatorMiddleware as PVM } from '../middleware/validation.js';
+import { checkJWT } from '../middleware/identification/jwt.js';
+import { user } from '../middleware/authorization/mustBe.js';
 
 const router = Router();
 
@@ -116,8 +117,9 @@ const router = Router();
  *                   example: "user"
  */
 
-router.get('/me', checkJWT, user, getUser);
+router.get('/me', checkJWT, user, getUserByEmail);
+router.post('/create', PVM.user, createUser);
 router.patch('/me', checkJWT, user, PVM.user, updateUser);
 router.patch('/meWithoutPassword', checkJWT, user, PVM.updateWithoutPassword, updateUser);
-router.post('/create', PVM.user, createUser);
+
 export default router;

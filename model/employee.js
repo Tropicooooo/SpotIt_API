@@ -1,4 +1,4 @@
-export const getEmployees = async (SQLClient, {page = 1, limit = 10}) => {
+export const getAllEmployees = async (SQLClient, {page = 1, limit = 10}) => {
     const offset = (page - 1) * limit;
 
     try {
@@ -28,8 +28,25 @@ export const getEmployees = async (SQLClient, {page = 1, limit = 10}) => {
     }
 };
 
+export const getAllEmployeesByName = async (SQLClient) => {
+    try {
+        const { rows } = await SQLClient.query(`
+            SELECT 
+                email AS "email", 
+                first_name AS "firstname", 
+                last_name AS "lastname" 
+            FROM "user" 
+            WHERE role_label = $1;
+        `, ["Employee"]);
 
-export const getEmployee = async (SQLClient, { email }) => {
+        return rows;
+    } catch (err) {
+        console.error('Failed to get employees', err);
+        return [];
+    }
+};
+
+export const getOneEmployee = async (SQLClient, { email }) => {
     const searchEmail = `${email}%`;
 
     try {
@@ -58,37 +75,6 @@ export const getEmployee = async (SQLClient, { email }) => {
     }
 };
 
-export const getTotalEmployees = async (SQLClient) => {
-    try {
-        const { rows } = await SQLClient.query(`
-            SELECT COUNT(u.email) AS total 
-            FROM "user" AS u
-            INNER JOIN role AS r ON u.role_label = r.label
-            WHERE u.role_label = $1;
-        `, ["Employee"]);
-
-        return parseInt(rows[0].total, 10);
-    } catch (err) {
-        console.error('Failed to get total employees', err);
-        return 0;
-    }
-};
-
-
-export const deleteEmployee = async (SQLClient, { email }) => {
-    try {
-        await SQLClient.query(`
-            UPDATE "user" 
-            SET role_label = NULL 
-            WHERE email = $1;
-        `, [email]);
-
-    } catch (err) {
-        console.error('Failed to delete employee', err);
-    }
-};
-
-
 export const updateEmployee = async (SQLClient, { email, firstname, lastname, phone_number, cityLabel, postalCode, streetLabel, streetNumber }) => {
     try {
         await SQLClient.query(`
@@ -110,20 +96,31 @@ export const updateEmployee = async (SQLClient, { email, firstname, lastname, ph
 };
 
 
-export const getEmployeesName = async (SQLClient) => {
+export const deleteEmployee = async (SQLClient, { email }) => {
+    try {
+        await SQLClient.query(`
+            UPDATE "user" 
+            SET role_label = NULL 
+            WHERE email = $1;
+        `, [email]);
+
+    } catch (err) {
+        console.error('Failed to delete employee', err);
+    }
+};
+
+export const getTotalEmployees = async (SQLClient) => {
     try {
         const { rows } = await SQLClient.query(`
-            SELECT 
-                email AS "email", 
-                first_name AS "firstname", 
-                last_name AS "lastname" 
-            FROM "user" 
-            WHERE role_label = $1;
+            SELECT COUNT(u.email) AS total 
+            FROM "user" AS u
+            INNER JOIN role AS r ON u.role_label = r.label
+            WHERE u.role_label = $1;
         `, ["Employee"]);
 
-        return rows;
+        return parseInt(rows[0].total, 10);
     } catch (err) {
-        console.error('Failed to get employees', err);
-        return [];
+        console.error('Failed to get total employees', err);
+        return 0;
     }
 };

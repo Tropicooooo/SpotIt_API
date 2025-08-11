@@ -1,6 +1,6 @@
 import { hash } from '../util/index.js';
 
-export const getUsers = async (SQLClient, { page = 1, limit = 10 }) => {
+export const getAllUsers = async (SQLClient, { page = 1, limit = 10 }) => {
   const offset = (page - 1) * limit;
   const { rows } = await SQLClient.query(
     'SELECT email AS "email", first_name AS "firstname", last_name AS "lastname", TO_CHAR(birthdate, \'YYYY-MM-DD\') AS "birthdate", phone_number AS "phone", city_label AS "cityLabel", postal_code AS "postalCode", street_label AS "streetLabel", street_number AS "streetNumber", points_number AS "pointsNumber", experience AS "experience", role_label AS "role" FROM "user" LIMIT $1 OFFSET $2',
@@ -9,7 +9,23 @@ export const getUsers = async (SQLClient, { page = 1, limit = 10 }) => {
   return rows;
 };
 
-export const getUser = async (SQLClient, { email }) => {
+export const getAllUsersByName = async (SQLClient) => {
+  try {
+    const { rows } = await SQLClient.query(`
+      SELECT 
+          email AS "email", 
+          first_name AS "firstname", 
+          last_name AS "lastname" 
+      FROM "user"
+    `);
+    return rows;
+  } catch (err) {
+    console.error('Failed to get employees', err);
+    return [];
+  }
+};
+
+export const getOneUser = async (SQLClient, { email }) => {
   const { rows } = await SQLClient.query(
     'SELECT email AS "email", first_name AS "firstname", last_name AS "lastname", TO_CHAR(birthdate, \'YYYY-MM-DD\') AS "birthdate", phone_number AS "phone", city_label AS "cityLabel", postal_code AS "postalCode", street_label AS "streetLabel", street_number AS "streetNumber", points_number AS "pointsNumber", experience AS "experience", role_label AS "role" FROM "user" WHERE email = $1',
     [email]
@@ -17,23 +33,27 @@ export const getUser = async (SQLClient, { email }) => {
   return rows[0];
 };
 
-export const getTotalUsers = async (SQLClient) => {
-  const result = await SQLClient.query('SELECT COUNT(*) AS total FROM "user"');
-  const total = result.rows[0].total;
-  return total;
-};
-
-export const deleteUser = async (SQLClient, { email }) => {
-  try {
-    await SQLClient.query('BEGIN');
-    await SQLClient.query('DELETE FROM "job" WHERE user_email = $1', [email]);
-    const result = await SQLClient.query('DELETE FROM "user" WHERE email = $1', [email]);
-    await SQLClient.query('COMMIT');
-    return result;
-  } catch (error) {
-    await SQLClient.query('ROLLBACK');
-    throw error;
-  }
+export const getUserByEmail = async (SQLClient, email) => {
+  const { rows } = await SQLClient.query(
+    `SELECT 
+      email AS "email",
+      first_name AS "firstname",
+      last_name AS "lastname",
+      TO_CHAR(birthdate, 'YYYY-MM-DD') AS "birthdate",
+      phone_number AS "phone",
+      city_label AS "cityLabel",
+      postal_code AS "postalCode",
+      street_label AS "streetLabel",
+      street_number AS "streetNumber",
+      points_number AS "pointsNumber",
+      experience AS "experience",
+      role_label AS "role",
+      password  -- récupération du hash du mot de passe
+    FROM "user"
+    WHERE email = $1`,
+    [email]
+  );
+  return rows[0];
 };
 
 export const createUser = async (
@@ -118,43 +138,21 @@ export const updateUser = async (
   }
 };
 
-export const getUsersName = async (SQLClient) => {
+export const deleteUser = async (SQLClient, { email }) => {
   try {
-    const { rows } = await SQLClient.query(`
-      SELECT 
-          email AS "email", 
-          first_name AS "firstname", 
-          last_name AS "lastname" 
-      FROM "user"
-    `);
-    return rows;
-  } catch (err) {
-    console.error('Failed to get employees', err);
-    return [];
+    await SQLClient.query('BEGIN');
+    await SQLClient.query('DELETE FROM "job" WHERE user_email = $1', [email]);
+    const result = await SQLClient.query('DELETE FROM "user" WHERE email = $1', [email]);
+    await SQLClient.query('COMMIT');
+    return result;
+  } catch (error) {
+    await SQLClient.query('ROLLBACK');
+    throw error;
   }
 };
 
-// ======= MODIFICATION =======
-// Ici on récupère aussi le champ password (hash) pour pouvoir faire la comparaison lors du login
-export const getUserByEmail = async (SQLClient, email) => {
-  const { rows } = await SQLClient.query(
-    `SELECT 
-      email AS "email",
-      first_name AS "firstname",
-      last_name AS "lastname",
-      TO_CHAR(birthdate, 'YYYY-MM-DD') AS "birthdate",
-      phone_number AS "phone",
-      city_label AS "cityLabel",
-      postal_code AS "postalCode",
-      street_label AS "streetLabel",
-      street_number AS "streetNumber",
-      points_number AS "pointsNumber",
-      experience AS "experience",
-      role_label AS "role",
-      password  -- récupération du hash du mot de passe
-    FROM "user"
-    WHERE email = $1`,
-    [email]
-  );
-  return rows[0];
+export const getTotalUsers = async (SQLClient) => {
+  const result = await SQLClient.query('SELECT COUNT(*) AS total FROM "user"');
+  const total = result.rows[0].total;
+  return total;
 };

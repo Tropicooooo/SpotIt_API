@@ -1,68 +1,76 @@
-import {pool} from '../../database/database.js';
+import { pool } from '../../database/database.js';
 import * as userModel from '../../model/user.js';
 
-// Gestion des utilisateurs
-export const getUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
     try {     
-        const users = await userModel.getUsers(pool, req.query);
+        const users = await userModel.getAllUsers(pool, req.query);
         const total = await userModel.getTotalUsers(pool);
+        
         if (users === null) {
-            return res.sendStatus(404);
-        }     
+            return res.status(404).json({ message: '[USER] Résultat de la recherche : 0 trouvé(s).' });
+        }
+
         return res.send({ users, total });
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 };
 
-export const getUser = async (req, res) => {
+export const getAllUsersByName = async (req, res) => {
     try {
-        const user = await userModel.getUser(pool, req.query);
-        if (!user) {
-            return res.sendStatus(404);
-        } 
-        return res.send(user);
-    } catch (e) {
-        return res.sendStatus(500);
+        const users = await userModel.getAllUsersByName(pool);
+        
+        if (!users) {
+            return res.status(404).json({ message: '[USER] Résultat de la recherche : 0 trouvé(s).' });
+        }
+        
+        return res.send(users);
     }
-};
-
-export const deleteUser = async (req, res) => {
-    try {
-        await userModel.deleteUser(pool, req.query);
-        return res.sendStatus(201);
-    } catch (e) {
-        return res.sendStatus(500);
+    catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }
 
-export const updateUser = async (req, res) => {
+export const getOneUser = async (req, res) => {
     try {
-        await userModel.updateUser(pool, req.body);
-        return res.sendStatus(201);
-    } catch (err) {
-        return res.sendStatus(500);
+        const user = await userModel.getOneUser(pool, req.query);
+
+        if (!user) {
+            return res.status(404).json({ message: '[USER] Résultat de la recherche : 0 trouvé(s).' });
+        } 
+
+        return res.send(user);
+    } catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 };
 
 export const createUser = async (req, res) => {
     try {       
         await userModel.createUser(pool, req.body);
-        return res.sendStatus(201);
-    } catch (err) {
-        return res.sendStatus(500);
+
+        return res.status(201).json({ message: '[USER] Résultat de la création : Création réussie.' });
+    } catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }
 
-export const getUsersName = async (req, res) => {
+export const updateUser = async (req, res) => {
     try {
-        const users = await userModel.getUsersName(pool);
-        if (!users) {
-            return res.sendStatus(404);
-        }
-        return res.send(users);
+        await userModel.updateUser(pool, req.body);
+
+        return res.status(201).json({ message: '[USER] Résultat de la mise à jour : Mise à jour réussie.' });
+    } catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
-    catch (e) {
-        return res.sendStatus(500);
+};
+
+export const deleteUser = async (req, res) => {
+    try {
+        await userModel.deleteUser(pool, req.query);
+
+        return res.status(201).json({ message: '[USER] Résultat de la suppression : Suppression réussie.' });
+    } catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }

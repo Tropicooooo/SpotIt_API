@@ -1,13 +1,7 @@
 
 import { reverseGeocode , geocodeAddress} from '../util/geocode.js';
 
-export const getTotalJobs = async (SQLClient, {email}) => {
-    const result = await SQLClient.query('SELECT COUNT(*) AS total FROM job where user_email = $1 ', [email]);
-    const total = result.rows[0].total
-    return total;
-};
-
-export const getJobs = async (SQLClient, { page = 1, limit = 10, email }) => {
+export const getAllJobs = async (SQLClient, { page = 1, limit = 10, email }) => {
     const offset = (page - 1) * limit;
 
     try {
@@ -35,7 +29,7 @@ export const getJobs = async (SQLClient, { page = 1, limit = 10, email }) => {
                const geocodedAddress = await reverseGeocode(latitude, longitude);
                return {
                  ...job,
-                 geocodedaddress: geocodedAddress, // Si géocodage échoue
+                 geocodedaddress: geocodedAddress,
                };
              })
            );
@@ -46,8 +40,8 @@ export const getJobs = async (SQLClient, { page = 1, limit = 10, email }) => {
          }
 };
 
-export const getJob = async (SQLClient, { id }) => {
-  const searchId = `${id}%`; // Recherche les IDs commençant par "id"
+export const getOneJob = async (SQLClient, { id }) => {
+  const searchId = `${id}%`;
   
   try {
     const { rows } = await SQLClient.query(
@@ -66,26 +60,25 @@ export const getJob = async (SQLClient, { id }) => {
           TO_CHAR(p.solved_date, 'YYYY-MM-DD') AS "solved_date"
        FROM job j
        JOIN problem p ON j.problem_id = p.id
-       WHERE CAST(j.problem_id AS TEXT) LIKE $1`, // Recherche par ID de problème
+       WHERE CAST(j.problem_id AS TEXT) LIKE $1`,
       [searchId]
     );
 
-    // Ajouter la latitude et la longitude converties en adresse
     const jobsWithAddress = await Promise.all(
       rows.map(async (job) => {
         const { latitude, longitude } = job;
         const geocodedAddress = await reverseGeocode(latitude, longitude);
         return {
           ...job,
-          geocodedaddress: geocodedAddress, // Adresse géocodée
+          geocodedaddress: geocodedAddress,
         };
       })
     );
     
-    return jobsWithAddress; // Retourne les résultats avec les adresses géocodées
+    return jobsWithAddress;
   } catch (err) {
     console.error('Error fetching jobs', err);
-    return []; // En cas d'erreur, retourne un tableau vide
+    return [];
   }
 };
 
@@ -93,10 +86,8 @@ export const getJob = async (SQLClient, { id }) => {
 export const updateJob = async (SQLClient, { id, report_date, status, solved_date, geocodedaddress, problemtypelabel, userEmail, description }) => {
 
   try {
-    // Gestion des coordonnées à partir de l'adresse
     const adresse = await geocodeAddress(geocodedaddress);
 
-    // Initialisation de la requête et des valeurs
     let query = `
       UPDATE Problem 
       SET Status = $1, Problem_Type_Label = $2, Description = $3, Latitude = $4, Longitude = $5, User_Email = $6, Report_Date = $7
@@ -112,7 +103,6 @@ export const updateJob = async (SQLClient, { id, report_date, status, solved_dat
     ];
     let paramIndex = 8;
 
-    // Gestion de solved_date en fonction du statut
     if (solved_date) {
       query += `, Solved_Date = $${paramIndex}`;
       values.push(solved_date);
@@ -126,7 +116,6 @@ export const updateJob = async (SQLClient, { id, report_date, status, solved_dat
     query += ` WHERE ID = $${paramIndex}`;
     values.push(id);
 
-    // Exécution de la requête
     await SQLClient.query(query, values);
 
     return { success: true };
@@ -136,4 +125,8 @@ export const updateJob = async (SQLClient, { id, report_date, status, solved_dat
   }
 };
 
-  
+export const getTotalJobs = async (SQLClient, {email}) => {
+    const result = await SQLClient.query('SELECT COUNT(*) AS total FROM job where user_email = $1 ', [email]);
+    const total = result.rows[0].total
+    return total;
+};  

@@ -1,16 +1,16 @@
-import {pool} from "../database/database.js";
+import { pool } from "../database/database.js";
 import * as reportTypeModel from "../model/reportType.js";
 
-export const getReportType = async (req, res)=> {
+export const getAllReportType = async (req, res)=> {
    try {
        const type = await reportTypeModel.getAllReportType(pool, req.params);
+
        if (type) {
-           res.send(type);
+           return res.send(type);
        } else {
-           res.sendStatus(404);
+           return res.status(404).json({ message: '[REPORT_TYPE] Résultat de la recherche : 0 trouvé(s).' });
        }
-   } catch (err) {
-       res.sendStatus(500);
+   } catch (e) {
+       return res.status(500).json({ message: 'Erreur du serveur.' });
    }
 };
-

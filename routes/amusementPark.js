@@ -1,5 +1,6 @@
+import { getAllAmusementParks } from "../controler/amusementPark.js";
+
 import { Router } from 'express';
-import { getAmusementParks } from "../controler/amusementPark.js";
 
 const router = Router();
 
@@ -39,6 +40,6 @@ const router = Router();
  *                       example: "Roller Coaster"
  */
 
-router.get("/", getAmusementParks);
+router.get("/", getAllAmusementParks);
 
 export default router;

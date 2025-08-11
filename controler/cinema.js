@@ -1,14 +1,16 @@
-import {pool} from '../database/database.js';
+import { pool } from '../database/database.js';
 import * as cinemaModel from '../model/cinema.js';
 
-export const getCinemas = async (req, res) => {
+export const getAllCinemas = async (req, res) => {
     try {     
-        const cinemas = await cinemaModel.getCinemas(pool, req.query);
+        const cinemas = await cinemaModel.getAllCinemas(pool, req.query);
+
         if (cinemas === null) {
-            return res.sendStatus(404);
-        }     
+            return res.status(404).json({ message: '[CINEMA] Résultat de la recherche : 0 trouvé(s).' });
+        }  
+
         return res.send({ cinemas });
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 };

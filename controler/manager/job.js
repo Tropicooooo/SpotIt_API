@@ -1,39 +1,41 @@
-import {pool} from '../../database/database.js';
+import { pool } from '../../database/database.js';
 import * as jobModel from '../../model/job.js';
 
-// Gestion des emplois
-export const getJobs = async (req, res) => {
+export const getAllJobs = async (req, res) => {
     try {
-        const jobs = await jobModel.getJobs(pool, req.query);
+        const jobs = await jobModel.getAllJobs(pool, req.query);
         const total = await jobModel.getTotalJobs(pool, req.query);
+
         if (jobs === null) {
-            return res.sendStatus(404);
+            return res.status(404).json({ message: '[JOB] Résultat de la recherche : 0 trouvé(s).' });
         }     
-        return res.send({jobs,total});
+
+        return res.send({ jobs, total });
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }
 
-export const getJob = async (req, res) => {
+export const getOneJob = async (req, res) => {
     try {
-        const job = await jobModel.getJob(pool, req.query);
+        const job = await jobModel.getOneJob(pool, req.query);
+
         if (!job) {
-            return res.sendStatus(404);
+            return res.status(404).json({ message: '[JOB] Résultat de la recherche : 0 trouvé(s).' });
         } 
+
         return res.send(job);
     } catch (e) {
-        return res.sendStatus(500);
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 }
 
 export const updateJob = async (req, res) => {
     try {
         await jobModel.updateJob(pool, req.body);
-        return res.sendStatus(201);
-    } catch (err) {
-        console.error("Erreur dans le contrôleur updateJob :", err);
-        return res.sendStatus(500);
+
+        return res.status(201).json({ message: '[JOB] Résultat de la mise à jour : Mise à jour réussie.' });
+    } catch (e) {
+        return res.status(500).json({ message: 'Erreur du serveur.' });
     }
 };
-

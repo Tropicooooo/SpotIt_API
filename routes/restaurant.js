@@ -1,5 +1,6 @@
+import { getAllRestaurants } from "../controler/restaurant.js";
+
 import { Router } from 'express';
-import { getRestaurants } from "../controler/restaurant.js";
 
 const router = Router();
 
@@ -37,6 +38,6 @@ const router = Router();
  *                     example: "French"
  */
 
-router.get("/", getRestaurants);
+router.get("/", getAllRestaurants);
 
 export default router;

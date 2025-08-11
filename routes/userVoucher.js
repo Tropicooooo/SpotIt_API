@@ -1,7 +1,8 @@
+import { getAllUserVouchers } from "../controler/userVoucher.js";
+
 import { Router } from 'express';
-import { getUserVouchers } from "../controler/userVoucher.js";
 import { createUserVoucher } from '../model/userVoucher.js';
-import {managerValidatorMiddleware as PVM} from '../middleware/validation.js';
+import { managerValidatorMiddleware as PVM } from '../middleware/validation.js';
 
 const router = Router();
 
@@ -72,7 +73,7 @@ const router = Router();
  *         description: Invalid input or data validation error.
  */
 
-router.get("/", getUserVouchers);
-router.post("/", PVM.userVoucher,createUserVoucher);
+router.get("/", getAllUserVouchers);
+router.post("/", PVM.userVoucher, createUserVoucher);
 
 export default router;
