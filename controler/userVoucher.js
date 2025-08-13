@@ -1,5 +1,7 @@
 import { pool } from '../database/database.js';
 import * as userVoucherModel from '../model/userVoucher.js';
+import * as userModel from '../model/user.js'
+import * as voucherModel from '../model/voucher.js'
 
 export const getUserVouchers = async (req, res) => {
     try {
@@ -15,21 +17,27 @@ export const getUserVouchers = async (req, res) => {
 
 export const createUserVoucher = async (req, res) => {
     try {
-        // Validation des données de la requête
-        const { label, description, points_number, picture } = req.body;
+        const { code, claimDate, expirationDate, userEmail, voucherLabel } = req.body;
 
-        if (!label || !description || !points_number || !picture) {
+        if (!code || !claimDate || !expirationDate || !userEmail || !voucherLabel) {
             return res.status(400).json({ message: 'Données manquantes dans la requête.' });
         }
 
-        // Appel au modèle pour créer un nouveau voucher
-        const newVoucher = await userVoucherModel.createUserVoucher(pool, req.body);
-        
-        // Retourner une réponse avec le voucher créé
-        return res.status(201).json({
-            message: 'Voucher créé avec succès',
-            voucher: newVoucher,
-        });
+        const user = await userModel.getUserByEmail(pool, userEmail);
+        const voucher = await voucherModel.getVoucher(pool, voucherLabel);
+
+        console.log(user);
+        console.log(voucher);
+
+        if (user.pointsNumber < voucher.pointsNumber) {
+            return res.status(401).json({ error: "Nombre de points insuffisant." });
+        }
+
+        await userVoucherModel.createUserVoucher(pool, { code, claimDate, expirationDate, userEmail, voucherLabel });
+
+        user.pointsNumber -= voucher.pointsNumber;
+
+        return res.status(201).json({ message: 'Voucher créé avec succès' });
     } catch (err) {
         console.error('Erreur lors de la création du voucher:', err);
         return res.sendStatus(500);
