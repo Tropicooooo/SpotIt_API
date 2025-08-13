@@ -26,9 +26,6 @@ export const createUserVoucher = async (req, res) => {
         const user = await userModel.getUserByEmail(pool, userEmail);
         const voucher = await voucherModel.getVoucher(pool, voucherLabel);
 
-        console.log(user);
-        console.log(voucher);
-
         if (user.pointsNumber < voucher.pointsNumber) {
             return res.status(401).json({ error: "Nombre de points insuffisant." });
         }
@@ -36,6 +33,8 @@ export const createUserVoucher = async (req, res) => {
         await userVoucherModel.createUserVoucher(pool, { code, claimDate, expirationDate, userEmail, voucherLabel });
 
         user.pointsNumber -= voucher.pointsNumber;
+
+        await userModel.updateUserPoints(pool, user.email, user.pointsNumber);
 
         return res.status(201).json({ message: 'Voucher créé avec succès' });
     } catch (err) {

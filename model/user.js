@@ -118,6 +118,11 @@ export const updateUser = async (
   }
 };
 
+export const updateUserPoints = async (SQLClient, email, pointsNumber) => {
+    const query = 'UPDATE "user" SET points_number = $1 WHERE email = $2';
+    await SQLClient.query(query, [pointsNumber, email]);
+};
+
 export const getUsersName = async (SQLClient) => {
   try {
     const { rows } = await SQLClient.query(`
